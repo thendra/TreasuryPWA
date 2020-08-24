@@ -1,0 +1,12 @@
+import React from 'react';
+import { render } from '@testing-library/react';
+import $CNAME from './$CNAME';
+
+describe('$CNAME Component', () => {
+  describe('Renders $CNAME Element', () => {
+    it('should render the component', () => {
+      const { container } = render(<$CNAME />);
+      expect(container.firstChild).toMatchSnapshot();
+    });
+  });
+});

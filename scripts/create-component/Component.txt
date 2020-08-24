@@ -1,0 +1,22 @@
+import React from 'react';
+import { Theme, Box, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    jssAttribute: 'css-value',
+  },
+}));
+
+interface I$CNAME {
+}
+
+const $CNAME = ({}: I$CNAME) => {
+  const classes = useStyles();
+  return (
+    <Box>
+    </Box>
+  )
+}
+
+export default $CNAME;
