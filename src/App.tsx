@@ -2,21 +2,15 @@ import React, { useState } from "react";
 import "./App.css";
 import { Box, Typography, Button, TextField } from "@material-ui/core";
 import ImageUpload from "./components/ImageUpload";
-import {
-  useQuery,
-  NetworkStatus,
-  useMutation,
-  useApolloClient,
-} from "@apollo/client";
-import { ITEMS, ADD_ITEM, ADD_ITEM_FRAGMENT } from "./graphQl";
+import { useQuery, NetworkStatus, useMutation } from "@apollo/client";
+import { ITEMS, ADD_ITEM } from "./graphQl";
 
 const App = () => {
   const { error, data, networkStatus } = useQuery(ITEMS, {
     notifyOnNetworkStatusChange: true,
   });
-  const [addItem, { data: result }] = useMutation(ADD_ITEM);
+  const [addItem] = useMutation(ADD_ITEM);
   const [title, setTitle] = useState("");
-  const [id, setId] = useState("");
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
