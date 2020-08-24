@@ -1,6 +1,6 @@
-# CollectionPWA
+# TreasuryPWA
 
-Front End React with TypeScript for Collection App
+Front End React with TypeScript for Treasury App
 
 ## Available Scripts
 
