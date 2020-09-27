@@ -23,3 +23,11 @@ export const ADD_ITEM = gql`
     }
   }
 `;
+
+export const REMOVE_ITEM = gql`
+  mutation MyMutation($id: String!) {
+    delete_Items_by_pk(id: $id) {
+      id
+    }
+  }
+`;
