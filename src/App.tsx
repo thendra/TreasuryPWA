@@ -23,6 +23,7 @@ const App = () => {
   const handleRemoveItem = (id: String) => {
     removeItem({
       variables: { id },
+      refetchQueries: [{ query: ITEMS }],
     });
   };
 

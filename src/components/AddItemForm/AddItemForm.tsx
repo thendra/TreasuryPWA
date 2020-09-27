@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { Box, TextField, Button } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 import { useMutation } from "@apollo/client";
-import { ADD_ITEM } from "../../graphQl";
+import { ADD_ITEM, ITEMS } from "../../graphQl";
 
-interface IAddItemForm {}
-
-const AddItemForm = ({}: IAddItemForm) => {
+const AddItemForm = () => {
   const [addItem] = useMutation(ADD_ITEM);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -25,6 +23,7 @@ const AddItemForm = ({}: IAddItemForm) => {
     event.preventDefault();
     addItem({
       variables: { id: uuidv4(), title: title, description: description },
+      refetchQueries: [{ query: ITEMS }],
     });
     setTitle("");
     setDescription("");
