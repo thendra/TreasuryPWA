@@ -5,7 +5,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 const client = new ApolloClient({
-  uri: "https://trusty-swan-30.hasura.app/v1/graphql",
+  uri: "https://cheerful-possum-15.hasura.app/v1/graphql",
   cache: new InMemoryCache(),
 });
 

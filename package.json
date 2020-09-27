@@ -49,6 +49,8 @@
   },
   "devDependencies": {
     "@storybook/preset-create-react-app": "^3.1.4",
-    "@storybook/react": "^6.0.16"
+    "@storybook/react": "^6.0.16",
+    "@types/uuid": "^8.3.0",
+    "uuid": "^8.3.0"
   }
 }
