@@ -29,6 +29,8 @@ const App = () => {
 
   return (
     <Box className="App">
+      <Typography variant="h1">Treasury</Typography>
+      <Typography variant="h2">Your Items</Typography>
       {networkStatus === NetworkStatus.refetch && "Refetching!"}
       {networkStatus === NetworkStatus.loading && "loading..."}
       {error && `Error! ${error.message}`}
