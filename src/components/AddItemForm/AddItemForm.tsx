@@ -48,9 +48,15 @@ const AddItemForm = () => {
 
   return (
     <>
-      <Fab onClick={() => setModalOpen(true)} color="primary" aria-label="add">
-        <AddIcon />
-      </Fab>
+      <Box position="fixed" bottom={50} right={40}>
+        <Fab
+          onClick={() => setModalOpen(true)}
+          color="primary"
+          aria-label="add"
+        >
+          <AddIcon />
+        </Fab>
+      </Box>
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
         <Box p={2}>
           <Typography variant="h2">New Item</Typography>
