@@ -35,6 +35,7 @@ const ImageUpload = ({ label, onUpload }: IImageUpload) => {
   };
   const handleDrop = useCallback((acceptedFiles: any) => {
     handleImageUpload(acceptedFiles[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
