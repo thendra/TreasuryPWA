@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { Button, Box } from "@material-ui/core";
+import React, { useCallback } from "react";
+import { Button } from "@material-ui/core";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Dropzone from "react-dropzone";
 import request from "superagent";
@@ -7,28 +7,29 @@ import request from "superagent";
 interface IImageUpload {
   label: string;
   onUpload: (uploadUrl: string) => void;
+  setImageLoading: (imgLoading: boolean) => void;
 }
 
-const ImageUpload = ({ label, onUpload }: IImageUpload) => {
+const ImageUpload = ({ label, onUpload, setImageLoading }: IImageUpload) => {
   const CLOUDINARY_UPLOAD_PRESET = "imdbo67t";
   const CLOUDINARY_UPLOAD_URL =
     "https://api.cloudinary.com/v1_1/dqtlei5j1/upload";
 
-  const [uploadedUrl, setUploadedUrl] = useState("");
   const handleImageUpload = (file: any) => {
+    setImageLoading(true);
     let upload = request
       .post(CLOUDINARY_UPLOAD_URL)
       .field("upload_preset", CLOUDINARY_UPLOAD_PRESET)
       .field("file", file);
 
     upload.end((err, response) => {
+      setImageLoading(false);
       if (err) {
         console.error(err);
       }
 
       if (response.body.secure_url !== "") {
         console.log(response);
-        setUploadedUrl(response.body.secure_url);
         onUpload(response.body.secure_url);
       }
     });
@@ -43,15 +44,6 @@ const ImageUpload = ({ label, onUpload }: IImageUpload) => {
       {({ getRootProps, getInputProps }) => (
         <div {...getRootProps()}>
           <input {...getInputProps()} />
-          {uploadedUrl === "" ? null : (
-            <Box>
-              <img
-                style={{ width: "100px", display: "flex" }}
-                alt="uploaded_image"
-                src={uploadedUrl}
-              />
-            </Box>
-          )}
           <Button
             variant="contained"
             color="default"

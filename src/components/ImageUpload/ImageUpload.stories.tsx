@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { withKnobs } from "@storybook/addon-knobs";
 import ImageUploadComp from "./ImageUpload";
 
@@ -10,5 +10,12 @@ export default {
 
 export const ImageUpload = () => {
   const onUpload = (imgUrl: string) => console.log(imgUrl);
-  return <ImageUploadComp onUpload={onUpload} label="Image upload" />;
+  const [, setImageLoading] = useState(false);
+  return (
+    <ImageUploadComp
+      setImageLoading={setImageLoading}
+      onUpload={onUpload}
+      label="Image upload"
+    />
+  );
 };

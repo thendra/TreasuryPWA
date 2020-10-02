@@ -6,6 +6,7 @@ import {
   Typography,
   Dialog,
   Fab,
+  CircularProgress,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { v4 as uuidv4 } from "uuid";
@@ -19,6 +20,7 @@ const AddItemForm = () => {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -45,6 +47,7 @@ const AddItemForm = () => {
     setDescription("");
     setImageUrl("");
   };
+  console.log(imageUrl);
 
   return (
     <>
@@ -61,13 +64,16 @@ const AddItemForm = () => {
         <Box p={2}>
           <Typography variant="h2">New Item</Typography>
           <form noValidate autoComplete="off" onSubmit={handleAddItem}>
-            {imageUrl === "" ? null : (
+            {(imageUrl || imageLoading) && (
               <Box display="flex" justifyContent="center">
-                <img
-                  style={{ width: "200px" }}
-                  alt="uploaded_image"
-                  src={imageUrl}
-                />
+                {imageLoading && <CircularProgress />}
+                {imageUrl && (
+                  <img
+                    style={{ width: "200px" }}
+                    alt="uploaded_image"
+                    src={imageUrl}
+                  />
+                )}
               </Box>
             )}
             <Box display="flex" justifyContent="center" my={2}>
@@ -92,12 +98,17 @@ const AddItemForm = () => {
               />
             </Box>
             <Box display="flex" justifyContent="center" pb={2}>
-              <ImageUpload label="Main image" onUpload={setImageUrl} />
+              <ImageUpload
+                label="Main image"
+                setImageLoading={setImageLoading}
+                onUpload={setImageUrl}
+              />
             </Box>
             <Box display="flex" justifyContent="center" pb={2}>
               <Button
                 variant="contained"
                 type="submit"
+                disabled={imageLoading}
                 onClick={() => setModalOpen(false)}
               >
                 Add Item
