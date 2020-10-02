@@ -6,19 +6,31 @@ export const ITEMS = gql`
       id
       title
       description
+      image_url
     }
   }
 `;
 
 export const ADD_ITEM = gql`
-  mutation MyMutation($id: String, $title: String, $description: String) {
+  mutation MyMutation(
+    $id: String
+    $title: String
+    $description: String
+    $image_url: String
+  ) {
     insert_Items(
-      objects: { id: $id, title: $title, description: $description }
+      objects: {
+        id: $id
+        title: $title
+        description: $description
+        image_url: $image_url
+      }
     ) {
       returning {
         id
         title
         description
+        image_url
       }
     }
   }

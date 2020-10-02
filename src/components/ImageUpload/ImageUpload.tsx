@@ -1,18 +1,18 @@
-import React, { useCallback, useState } from "react";
-import { Box, Typography } from "@material-ui/core";
+import React, { useCallback } from "react";
+import { Button } from "@material-ui/core";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Dropzone from "react-dropzone";
 import request from "superagent";
 
 interface IImageUpload {
-  label: string;
+  onUpload: (uploadUrl: string) => void;
 }
 
-const ImageUpload = ({ label }: IImageUpload) => {
+const ImageUpload = ({ onUpload }: IImageUpload) => {
   const CLOUDINARY_UPLOAD_PRESET = "imdbo67t";
   const CLOUDINARY_UPLOAD_URL =
     "https://api.cloudinary.com/v1_1/dqtlei5j1/upload";
 
-  const [uploadedUrl, setUploadedUrl] = useState("");
   const handleImageUpload = (file: any) => {
     let upload = request
       .post(CLOUDINARY_UPLOAD_URL)
@@ -26,35 +26,26 @@ const ImageUpload = ({ label }: IImageUpload) => {
 
       if (response.body.secure_url !== "") {
         console.log(response);
-        setUploadedUrl(response.body.secure_url);
+        onUpload(response.body.secure_url);
       }
     });
   };
   const handleDrop = useCallback((acceptedFiles: any) => {
-    console.log(acceptedFiles);
     handleImageUpload(acceptedFiles[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Box>
+    <Button variant="contained" color="default" startIcon={<CloudUploadIcon />}>
+      Upload image
       <Dropzone onDrop={(acceptedFiles) => handleDrop(acceptedFiles)}>
         {({ getRootProps, getInputProps }) => (
           <div {...getRootProps()}>
             <input {...getInputProps()} />
-            {uploadedUrl === "" ? null : (
-              <Box>
-                <img
-                  style={{ width: "500px", display: "flex" }}
-                  alt="uploaded_image"
-                  src={uploadedUrl}
-                />
-              </Box>
-            )}
-            <Typography>{label}</Typography>
           </div>
         )}
       </Dropzone>
-    </Box>
+    </Button>
   );
 };
 
