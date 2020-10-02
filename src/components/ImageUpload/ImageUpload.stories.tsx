@@ -10,5 +10,5 @@ export default {
 
 export const ImageUpload = () => {
   const onUpload = (imgUrl: string) => console.log(imgUrl);
-  return <ImageUploadComp onUpload={onUpload} />;
+  return <ImageUploadComp onUpload={onUpload} label="Image upload" />;
 };

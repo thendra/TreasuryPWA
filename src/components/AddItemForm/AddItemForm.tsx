@@ -53,7 +53,7 @@ const AddItemForm = () => {
       </Fab>
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
         <Box p={2}>
-          <Typography variant="h2">Item upload</Typography>
+          <Typography variant="h2">New Item</Typography>
           <form noValidate autoComplete="off" onSubmit={handleAddItem}>
             {imageUrl === "" ? null : (
               <Box display="flex" justifyContent="center">
@@ -86,7 +86,7 @@ const AddItemForm = () => {
               />
             </Box>
             <Box display="flex" justifyContent="center" pb={2}>
-              <ImageUpload onUpload={setImageUrl} />
+              <ImageUpload label="Main image" onUpload={setImageUrl} />
             </Box>
             <Box display="flex" justifyContent="center" pb={2}>
               <Button
