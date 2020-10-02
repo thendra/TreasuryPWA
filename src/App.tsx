@@ -18,7 +18,7 @@ import { REMOVE_ITEM } from "./graphQl";
 const useStyles = makeStyles({
   card: {
     width: "250px",
-    margin: 32,
+    margin: 24,
   },
   media: {
     height: 200,
@@ -53,7 +53,7 @@ const App = () => {
       {networkStatus === NetworkStatus.refetch && "Refetching!"}
       {networkStatus === NetworkStatus.loading && "loading..."}
       {error && `Error! ${error.message}`}
-      <Box display="flex" flexWrap="wrap">
+      <Box display="flex" flexWrap="wrap" justifyContent="center">
         {data?.Items.map(({ id, title, description, image_url }: IItem) => (
           <Card className={classes.card}>
             <Typography variant="h4">{title}</Typography>
