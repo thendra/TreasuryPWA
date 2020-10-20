@@ -1,29 +1,29 @@
 import React from "react";
 import "./App.css";
-import {
-  Box,
-  Button,
-  Typography,
-  Card,
-  CardMedia,
-  CardActionArea,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Box, Typography } from "@material-ui/core";
 import { useQuery, NetworkStatus } from "@apollo/client";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import { ITEMS } from "./graphQl";
 import AddItemForm from "./components/AddItemForm";
+import ItemSummary from "./components/ItemSummary";
 import { useMutation } from "@apollo/client";
 import { REMOVE_ITEM } from "./graphQl";
 
-const useStyles = makeStyles({
-  card: {
-    width: "250px",
-    margin: 24,
+const useStyles = makeStyles((theme: Theme) => ({
+  app: {
+    width: "calc(100% - 40px)",
+    padding: `${30}px ${20}px`,
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+      padding: `${30}px 0`,
+    },
+    margin: "auto",
+    textAlign: "center",
   },
   media: {
     height: 200,
   },
-});
+}));
 
 const App = () => {
   interface IItem {
@@ -44,10 +44,11 @@ const App = () => {
       refetchQueries: [{ query: ITEMS }],
     });
   };
+
   const classes = useStyles();
 
   return (
-    <Box className="App">
+    <Box className={classes.app}>
       <Typography variant="h1">Treasury</Typography>
       <Typography variant="h2">Your Items</Typography>
       {networkStatus === NetworkStatus.refetch && "Refetching!"}
@@ -55,22 +56,13 @@ const App = () => {
       {error && `Error! ${error.message}`}
       <Box display="flex" flexWrap="wrap" justifyContent="center">
         {data?.Items.map(({ id, title, description, image_url }: IItem) => (
-          <Card className={classes.card}>
-            <Typography variant="h4">{title}</Typography>
-            <CardActionArea>
-              <CardMedia
-                className={classes.media}
-                image={image_url}
-                title={title}
-              />
-            </CardActionArea>
-            <Typography key={description}>{description}</Typography>
-            <Box py={2}>
-              <Button variant="contained" onClick={() => handleRemoveItem(id)}>
-                Remove Item
-              </Button>
-            </Box>
-          </Card>
+          <ItemSummary
+            id={id}
+            title={title}
+            description={description}
+            imageUrl={image_url}
+            onRemove={handleRemoveItem}
+          />
         ))}
       </Box>
       <AddItemForm />
