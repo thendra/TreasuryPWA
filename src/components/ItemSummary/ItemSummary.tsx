@@ -1,53 +1,65 @@
 import React from "react";
-import { Box, Button, Typography, Theme } from "@material-ui/core";
+import { Box, Fab, Typography, Theme } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles<Theme, Pick<IItemSummary, "imageUrl">>(
   (theme: Theme) => ({
-    wrapper: {
+    container: {
       display: "flex",
-      flexDirection: "column",
-      maxWidth: "400px",
-      maxHeight: "400px",
-      minWidth: "250px",
-      minHeight: "250px",
-      [theme.breakpoints.down("md")]: {
-        flex: 1,
+      justifyContent: "center",
+      flexWrap: "wrap",
+      margin: "15px",
+    },
+    optionList: {
+      display: "flex",
+    },
+    card: {
+      width: "300px",
+      height: "400px",
+      position: "relative",
+      cursor: "pointer",
+      overflow: "hidden",
+      boxShadow: "0 10px 20px rgba(0,0,0,0.3)",
+      "&:hover": {
+        "& $details": {
+          transform: "none",
+          "& a": {
+            transform: "none",
+          },
+        },
+        "& img": {
+          transform: "scale(1.2)",
+        },
+      },
+      "& img": {
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        transition: "all 0.3s",
       },
       [theme.breakpoints.down("xs")]: {
-        width: "100%",
-        height: "300px",
+        width: "auto",
+        flex: "1 1 100%",
       },
     },
-    hoverWrapper: {
-      flex: 1,
-      position: "relative",
-    },
-    card: ({ imageUrl }) => ({
-      width: "100%",
-      height: "100%",
-      backgroundSize: "cover",
-      backgroundImage: `url(${imageUrl})`,
-      "&:hover": {
-        opacity: 0.2,
-      },
-    }),
-    media: {
-      height: 200,
-    },
-    hoverArea: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+    details: {
+      boxSizing: "border-box",
       position: "absolute",
-      top: 0,
       bottom: 0,
       left: 0,
-      right: 0,
-      opacity: 0,
-      "&:hover": {
-        opacity: 0.8,
-        backgroundColor: "white",
+      display: "flex",
+      width: "100%",
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor: "#fff",
+      padding: `${20}px ${10}px`,
+      transform: "translateY(100%)",
+      transition: "all 0.3s",
+      [theme.breakpoints.down("xs")]: {
+        "& h2": {
+          fontSize: "14px",
+        },
       },
     },
   })
@@ -71,20 +83,16 @@ const ItemSummary = ({
   const classes = useStyles({ imageUrl });
   console.log(imageUrl);
   return (
-    <Box className={classes.wrapper}>
-      <Box className={classes.hoverWrapper}>
-        <Box className={classes.card} />
-        <Box className={classes.hoverArea}>
-          <Box>
-            <Typography variant="h4">{title}</Typography>
-            <Typography key={description}>{description}</Typography>
-            <Box py={2}></Box>
-          </Box>
+    <Box className={classes.container}>
+      <Box className={classes.card}>
+        <img src={imageUrl} alt={title} />
+        <Box className={classes.details}>
+          <Typography variant="h5">{title}</Typography>
+          <Fab onClick={() => onRemove(id)} color="primary" aria-label="delete">
+            <DeleteIcon />
+          </Fab>
         </Box>
       </Box>
-      <Button variant="contained" onClick={() => onRemove(id)}>
-        Remove Item
-      </Button>
     </Box>
   );
 };
