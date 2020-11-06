@@ -360,6 +360,17 @@ export type GetItemsQuery = (
   )> }
 );
 
+export type GetItemLinksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetItemLinksQuery = (
+  { __typename?: 'query_root' }
+  & { Items: Array<(
+    { __typename?: 'Items' }
+    & Pick<Items, 'id'>
+  )> }
+);
+
 export type AdditemMutationVariables = Exact<{
   id?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
@@ -428,6 +439,38 @@ export function useGetItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetItemsQueryHookResult = ReturnType<typeof useGetItemsQuery>;
 export type GetItemsLazyQueryHookResult = ReturnType<typeof useGetItemsLazyQuery>;
 export type GetItemsQueryResult = Apollo.QueryResult<GetItemsQuery, GetItemsQueryVariables>;
+export const GetItemLinksDocument = gql`
+    query GetItemLinks {
+  Items {
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetItemLinksQuery__
+ *
+ * To run a query within a React component, call `useGetItemLinksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetItemLinksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetItemLinksQuery(baseOptions?: Apollo.QueryHookOptions<GetItemLinksQuery, GetItemLinksQueryVariables>) {
+        return Apollo.useQuery<GetItemLinksQuery, GetItemLinksQueryVariables>(GetItemLinksDocument, baseOptions);
+      }
+export function useGetItemLinksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemLinksQuery, GetItemLinksQueryVariables>) {
+          return Apollo.useLazyQuery<GetItemLinksQuery, GetItemLinksQueryVariables>(GetItemLinksDocument, baseOptions);
+        }
+export type GetItemLinksQueryHookResult = ReturnType<typeof useGetItemLinksQuery>;
+export type GetItemLinksLazyQueryHookResult = ReturnType<typeof useGetItemLinksLazyQuery>;
+export type GetItemLinksQueryResult = Apollo.QueryResult<GetItemLinksQuery, GetItemLinksQueryVariables>;
 export const AdditemDocument = gql`
     mutation ADDITEM($id: String, $title: String, $description: String, $image_url: String) {
   insert_Items(objects: {id: $id, title: $title, description: $description, image_url: $image_url}) {
@@ -508,6 +551,13 @@ export const GetItems = gql`
     title
     description
     image_url
+  }
+}
+    `;
+export const GetItemLinks = gql`
+    query GetItemLinks {
+  Items {
+    id
   }
 }
     `;

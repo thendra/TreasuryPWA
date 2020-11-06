@@ -1,7 +1,8 @@
 import React from "react";
 import "./App.css";
 import { Box, Typography } from "@material-ui/core";
-import { useQuery, NetworkStatus } from "@apollo/client";
+import { NetworkStatus } from "@apollo/client";
+import { Routes, Route } from "react-router-dom";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { Items, useGetItemsQuery } from "./output-types";
 import { ITEMS } from "./graphQl";
@@ -27,9 +28,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const App = () => {
-  // const { error, data, networkStatus } = useQuery(ITEMS, {
+  // const { error, data, networkStatus } = useGetItemLinksQuery({
   //   notifyOnNetworkStatusChange: true,
   // });
+
   const { data, networkStatus, error } = useGetItemsQuery({
     notifyOnNetworkStatusChange: true,
   });
@@ -46,21 +48,33 @@ const App = () => {
 
   return (
     <Box className={classes.app}>
-      <Typography variant="h1">Treasury</Typography>
-      <Typography variant="h2">Your Items</Typography>
-      {networkStatus === NetworkStatus.refetch && "Refetching!"}
-      {networkStatus === NetworkStatus.loading && "loading..."}
-      {error && `Error! ${error.message}`}
-      <Box display="flex" flexWrap="wrap" justifyContent="center">
-        {data?.Items.map(({ id, title, image_url }: Items) => (
-          <ItemSummary
-            id={id}
-            title={title}
-            image_url={image_url}
-            onRemove={handleRemoveItem}
-          />
-        ))}
-      </Box>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Typography variant="h1">Treasury</Typography>
+              <Typography variant="h2">Your Items</Typography>
+              {networkStatus === NetworkStatus.refetch && "Refetching!"}
+              {networkStatus === NetworkStatus.loading && "loading..."}
+              {error && `Error! ${error.message}`}
+              <Box display="flex" flexWrap="wrap" justifyContent="center">
+                {data?.Items.map(({ id, title, image_url }: Items) => (
+                  <ItemSummary
+                    id={id}
+                    title={title}
+                    image_url={image_url}
+                    onRemove={handleRemoveItem}
+                  />
+                ))}
+              </Box>
+            </>
+          }
+        />
+        <Route path="/*">
+          <Route path=":id" element={<Typography>fish</Typography>} />
+        </Route>
+      </Routes>
       <AddItemForm />
     </Box>
   );

@@ -5,7 +5,7 @@ schema:
         content-type: application/json
 documents: "src/graphQl/queries.ts"
 generates:
-  src/output-types.d.ts:
+  src/output-types.ts:
     plugins:
       - "typescript"
       - "typescript-operations"

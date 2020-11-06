@@ -11,6 +11,14 @@ export const ITEMS = gql`
   }
 `;
 
+export const GET_ITEM_LINKS = gql`
+  query GetItemLinks {
+    Items {
+      id
+    }
+  }
+`;
+
 export const ADD_ITEM = gql`
   mutation ADDITEM(
     $id: String
