@@ -11,6 +11,17 @@ export const ITEMS = gql`
   }
 `;
 
+export const GET_ITEM_BY_ID = gql`
+  query GetItemById($itemId: String!) {
+    Items_by_pk(id: $itemId) {
+      description
+      id
+      image_url
+      title
+    }
+  }
+`;
+
 export const GET_ITEM_LINKS = gql`
   query GetItemLinks {
     Items {

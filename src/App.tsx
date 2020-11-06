@@ -2,12 +2,13 @@ import React from "react";
 import "./App.css";
 import { Box, Typography } from "@material-ui/core";
 import { NetworkStatus } from "@apollo/client";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { Items, useGetItemsQuery } from "./output-types";
 import { ITEMS } from "./graphQl";
 import AddItemForm from "./components/AddItemForm";
 import ItemSummary from "./components/ItemSummary";
+import ItemDetailed from "./components/ItemDetailed";
 import { useMutation } from "@apollo/client";
 import { REMOVE_ITEM } from "./graphQl";
 
@@ -48,6 +49,9 @@ const App = () => {
 
   return (
     <Box className={classes.app}>
+      <nav>
+        <Link to="/">Home</Link>
+      </nav>
       <Routes>
         <Route
           path="/"
@@ -72,7 +76,7 @@ const App = () => {
           }
         />
         <Route path="/*">
-          <Route path=":id" element={<Typography>fish</Typography>} />
+          <Route path=":id" element={<ItemDetailed />} />
         </Route>
       </Routes>
       <AddItemForm />

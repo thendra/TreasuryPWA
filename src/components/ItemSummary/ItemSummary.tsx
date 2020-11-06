@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Box, Fab, Typography, Theme } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,7 +20,6 @@ const useStyles = makeStyles<Theme, Pick<IItemSummary, "image_url">>(
       width: "300px",
       height: "400px",
       position: "relative",
-      cursor: "pointer",
       overflow: "hidden",
       boxShadow: "0 10px 20px rgba(0,0,0,0.3)",
       "&:hover": {
@@ -76,7 +76,9 @@ const ItemSummary = ({ id, title, image_url, onRemove }: IItemSummary) => {
   return (
     <Box className={classes.container}>
       <Box className={classes.card}>
-        <img src={image_url || ""} alt={title} />
+        <Link to={`/${id}`}>
+          <img src={image_url || ""} alt={title} />
+        </Link>
         <Box className={classes.details}>
           <Typography variant="h5">{title}</Typography>
           <Fab onClick={() => onRemove(id)} color="primary" aria-label="delete">

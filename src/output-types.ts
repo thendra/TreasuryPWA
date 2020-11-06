@@ -360,6 +360,19 @@ export type GetItemsQuery = (
   )> }
 );
 
+export type GetItemByIdQueryVariables = Exact<{
+  itemId: Scalars['String'];
+}>;
+
+
+export type GetItemByIdQuery = (
+  { __typename?: 'query_root' }
+  & { Items_by_pk?: Maybe<(
+    { __typename?: 'Items' }
+    & Pick<Items, 'description' | 'id' | 'image_url' | 'title'>
+  )> }
+);
+
 export type GetItemLinksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -439,6 +452,42 @@ export function useGetItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetItemsQueryHookResult = ReturnType<typeof useGetItemsQuery>;
 export type GetItemsLazyQueryHookResult = ReturnType<typeof useGetItemsLazyQuery>;
 export type GetItemsQueryResult = Apollo.QueryResult<GetItemsQuery, GetItemsQueryVariables>;
+export const GetItemByIdDocument = gql`
+    query GetItemById($itemId: String!) {
+  Items_by_pk(id: $itemId) {
+    description
+    id
+    image_url
+    title
+  }
+}
+    `;
+
+/**
+ * __useGetItemByIdQuery__
+ *
+ * To run a query within a React component, call `useGetItemByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetItemByIdQuery({
+ *   variables: {
+ *      itemId: // value for 'itemId'
+ *   },
+ * });
+ */
+export function useGetItemByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetItemByIdQuery, GetItemByIdQueryVariables>) {
+        return Apollo.useQuery<GetItemByIdQuery, GetItemByIdQueryVariables>(GetItemByIdDocument, baseOptions);
+      }
+export function useGetItemByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemByIdQuery, GetItemByIdQueryVariables>) {
+          return Apollo.useLazyQuery<GetItemByIdQuery, GetItemByIdQueryVariables>(GetItemByIdDocument, baseOptions);
+        }
+export type GetItemByIdQueryHookResult = ReturnType<typeof useGetItemByIdQuery>;
+export type GetItemByIdLazyQueryHookResult = ReturnType<typeof useGetItemByIdLazyQuery>;
+export type GetItemByIdQueryResult = Apollo.QueryResult<GetItemByIdQuery, GetItemByIdQueryVariables>;
 export const GetItemLinksDocument = gql`
     query GetItemLinks {
   Items {
@@ -551,6 +600,16 @@ export const GetItems = gql`
     title
     description
     image_url
+  }
+}
+    `;
+export const GetItemById = gql`
+    query GetItemById($itemId: String!) {
+  Items_by_pk(id: $itemId) {
+    description
+    id
+    image_url
+    title
   }
 }
     `;
