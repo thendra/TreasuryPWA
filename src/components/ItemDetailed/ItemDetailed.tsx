@@ -1,5 +1,5 @@
 import React from "react";
-import { Theme, Box, Typography } from "@material-ui/core";
+import { Theme, Box, Typography, Hidden } from "@material-ui/core";
 import { NetworkStatus } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
 import { useParams } from "react-router-dom";
@@ -40,15 +40,22 @@ const ItemDetailed = () => {
       {error && `Error! ${error.message}`}
       {item && (
         <>
+          <Hidden mdUp>
+            <Typography display="block" align="left" variant="h2">
+              {item?.title}
+            </Typography>
+          </Hidden>
           <img
             className={classes.mainImage}
             src={item?.image_url || ""}
             alt={item?.title}
           />
           <Box paddingLeft={2} paddingRight={2}>
-            <Typography align="left" variant="h1">
-              {item?.title}
-            </Typography>
+            <Hidden smDown>
+              <Typography display="block" align="left" variant="h2">
+                {item?.title}
+              </Typography>
+            </Hidden>
             <Typography align="left" variant="body1">
               {item?.description}
             </Typography>
