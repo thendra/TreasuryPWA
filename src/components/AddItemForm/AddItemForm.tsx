@@ -22,7 +22,6 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
