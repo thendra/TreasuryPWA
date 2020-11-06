@@ -31,7 +31,8 @@
     "create-component": "node scripts/create-component/index.ts",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,6 +50,13 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.18.0",
+    "@graphql-codegen/fragment-matcher": "^1.17.8",
+    "@graphql-codegen/introspection": "^1.18.0",
+    "@graphql-codegen/typescript": "1.17.11",
+    "@graphql-codegen/typescript-document-nodes": "^1.17.8",
+    "@graphql-codegen/typescript-operations": "^1.17.8",
+    "@graphql-codegen/typescript-react-apollo": "^2.0.7",
     "@storybook/preset-create-react-app": "^3.1.4",
     "@storybook/react": "^6.0.16",
     "@types/uuid": "^8.3.0",

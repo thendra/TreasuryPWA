@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const ITEMS = gql`
-  query MyQuery {
+  query GetItems {
     Items {
       id
       title
@@ -12,7 +12,7 @@ export const ITEMS = gql`
 `;
 
 export const ADD_ITEM = gql`
-  mutation MyMutation(
+  mutation ADDITEM(
     $id: String
     $title: String
     $description: String
@@ -37,7 +37,7 @@ export const ADD_ITEM = gql`
 `;
 
 export const REMOVE_ITEM = gql`
-  mutation MyMutation($id: String!) {
+  mutation RemoveItem($id: String!) {
     delete_Items_by_pk(id: $id) {
       id
     }

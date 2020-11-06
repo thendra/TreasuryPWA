@@ -2,8 +2,9 @@ import React from "react";
 import { Box, Fab, Typography, Theme } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
+import { Items } from "../../output-types";
 
-const useStyles = makeStyles<Theme, Pick<IItemSummary, "imageUrl">>(
+const useStyles = makeStyles<Theme, Pick<IItemSummary, "image_url">>(
   (theme: Theme) => ({
     container: {
       display: "flex",
@@ -65,27 +66,17 @@ const useStyles = makeStyles<Theme, Pick<IItemSummary, "imageUrl">>(
   })
 );
 
-interface IItemSummary {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
+interface IItemSummary extends Items {
   onRemove: (id: string) => void;
 }
 
-const ItemSummary = ({
-  id,
-  title,
-  description,
-  imageUrl,
-  onRemove,
-}: IItemSummary) => {
-  const classes = useStyles({ imageUrl });
-  console.log(imageUrl);
+const ItemSummary = ({ id, title, image_url, onRemove }: IItemSummary) => {
+  const classes = useStyles({ image_url });
+  console.log(image_url);
   return (
     <Box className={classes.container}>
       <Box className={classes.card}>
-        <img src={imageUrl} alt={title} />
+        <img src={image_url || ""} alt={title} />
         <Box className={classes.details}>
           <Typography variant="h5">{title}</Typography>
           <Fab onClick={() => onRemove(id)} color="primary" aria-label="delete">

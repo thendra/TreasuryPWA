@@ -3,6 +3,7 @@ import "./App.css";
 import { Box, Typography } from "@material-ui/core";
 import { useQuery, NetworkStatus } from "@apollo/client";
 import { makeStyles, Theme } from "@material-ui/core/styles";
+import { Items, useGetItemsQuery } from "./output-types";
 import { ITEMS } from "./graphQl";
 import AddItemForm from "./components/AddItemForm";
 import ItemSummary from "./components/ItemSummary";
@@ -26,14 +27,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const App = () => {
-  interface IItem {
-    id: string;
-    title: string;
-    description: string;
-    image_url: string;
-  }
-
-  const { error, data, networkStatus } = useQuery(ITEMS, {
+  // const { error, data, networkStatus } = useQuery(ITEMS, {
+  //   notifyOnNetworkStatusChange: true,
+  // });
+  const { data, networkStatus, error } = useGetItemsQuery({
     notifyOnNetworkStatusChange: true,
   });
   const [removeItem] = useMutation(REMOVE_ITEM);
@@ -55,12 +52,11 @@ const App = () => {
       {networkStatus === NetworkStatus.loading && "loading..."}
       {error && `Error! ${error.message}`}
       <Box display="flex" flexWrap="wrap" justifyContent="center">
-        {data?.Items.map(({ id, title, description, image_url }: IItem) => (
+        {data?.Items.map(({ id, title, image_url }: Items) => (
           <ItemSummary
             id={id}
             title={title}
-            description={description}
-            imageUrl={image_url}
+            image_url={image_url}
             onRemove={handleRemoveItem}
           />
         ))}

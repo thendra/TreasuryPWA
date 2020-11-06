@@ -1,0 +1,14 @@
+overwrite: true
+schema:
+  - https://cheerful-possum-15.hasura.app/v1/graphql:
+      headers:
+        content-type: application/json
+documents: "src/graphQl/queries.ts"
+generates:
+  src/output-types.d.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+      - "typescript-document-nodes"
+      - "fragment-matcher"
