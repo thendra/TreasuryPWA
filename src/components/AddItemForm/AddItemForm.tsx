@@ -102,7 +102,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
               variant="contained"
               type="submit"
               disabled={imageLoading}
-              onClick={() => setModalOpen(false)}
+              onClick={onClose}
             >
               Add Item
             </Button>
