@@ -52,7 +52,7 @@ const ItemDetailed = () => {
           />
           <Box paddingLeft={2} paddingRight={2}>
             <Hidden smDown>
-              <Typography display="block" align="left" variant="h2">
+              <Typography display="block" align="left" variant="h1">
                 {item?.title}
               </Typography>
             </Hidden>

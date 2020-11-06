@@ -34,9 +34,10 @@ const useStyles = makeStyles<Theme, Pick<IItemSummary, "image_url">>(
         },
       },
       "& img": {
+        backgroundColor: "#6f6866",
         width: "100%",
         height: "100%",
-        objectFit: "cover",
+        objectFit: "scale-down",
         transition: "all 0.3s",
       },
       [theme.breakpoints.down("xs")]: {
@@ -51,9 +52,10 @@ const useStyles = makeStyles<Theme, Pick<IItemSummary, "image_url">>(
       left: 0,
       display: "flex",
       width: "100%",
+      color: "#fff",
       justifyContent: "space-between",
       alignItems: "center",
-      backgroundColor: "#fff",
+      backgroundColor: "#38302e",
       padding: `${20}px ${10}px`,
       transform: "translateY(100%)",
       transition: "all 0.3s",
@@ -77,7 +79,7 @@ const ItemSummary = ({ id, title, image_url, onRemove }: IItemSummary) => {
     <Box className={classes.container}>
       <Box className={classes.card}>
         <Link to={`/${id}`}>
-          <img src={image_url || ""} alt={title} />
+          <img className="mainImage" src={image_url || ""} alt={title} />
         </Link>
         <Box className={classes.details}>
           <Typography variant="h5">{title}</Typography>
