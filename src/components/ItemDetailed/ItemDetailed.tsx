@@ -1,9 +1,14 @@
-import React from "react";
-import { Theme, Box, Typography, Hidden } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Theme, Box, Typography, Hidden, TextField } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 import { NetworkStatus } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useParams } from "react-router-dom";
-import { useGetItemByIdQuery } from "../../output-types";
+import {
+  useGetItemByIdQuery,
+  useUpdateItemDescriptionMutation,
+} from "../../output-types";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -33,6 +38,33 @@ const ItemDetailed = () => {
 
   const item = data?.Items_by_pk;
 
+  const [editMode, setEditMode] = useState(false);
+  const [updateItemMutation] = useUpdateItemDescriptionMutation({
+    variables: {
+      id,
+      description: item?.description,
+    },
+  });
+
+  const [updateDescValue, setDescValues] = useState({
+    id: id,
+    description: item?.description,
+  });
+
+  useEffect(
+    () =>
+      setDescValues({
+        id: id,
+        description: item?.description,
+      }),
+    [id, item]
+  );
+
+  const handleDescChange = () => {
+    setEditMode(false);
+    updateItemMutation({ variables: { ...updateDescValue } });
+  };
+
   return (
     <Box className={classes.root}>
       {networkStatus === NetworkStatus.refetch && "Refetching!"}
@@ -48,7 +80,7 @@ const ItemDetailed = () => {
           <img
             className={classes.mainImage}
             src={item?.image_url || ""}
-            alt={item?.title}
+            alt={item?.title as string}
           />
           <Box paddingLeft={2} paddingRight={2}>
             <Hidden smDown>
@@ -56,9 +88,37 @@ const ItemDetailed = () => {
                 {item?.title}
               </Typography>
             </Hidden>
-            <Typography align="left" variant="body1">
-              {item?.description}
-            </Typography>
+            {!editMode ? (
+              <Box display="flex">
+                <Box flex="1">
+                  <Typography align="left" variant="body1">
+                    {updateDescValue.description ||
+                      "Click on the edit button to add a description..."}
+                  </Typography>
+                </Box>
+                <EditIcon onClick={() => setEditMode(true)} />
+              </Box>
+            ) : (
+              <ClickAwayListener onClickAway={handleDescChange}>
+                <TextField
+                  value={
+                    updateDescValue.description ||
+                    "Add a description of your item here..."
+                  }
+                  fullWidth
+                  id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  onChange={(e) => {
+                    setDescValues({
+                      id,
+                      description: e.target.value,
+                    });
+                  }}
+                  variant="outlined"
+                />
+              </ClickAwayListener>
+            )}
           </Box>
         </>
       )}

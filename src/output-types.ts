@@ -403,6 +403,20 @@ export type AdditemMutation = (
   )> }
 );
 
+export type UpdateItemDescriptionMutationVariables = Exact<{
+  id: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateItemDescriptionMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_Items_by_pk?: Maybe<(
+    { __typename?: 'Items' }
+    & Pick<Items, 'description'>
+  )> }
+);
+
 export type RemoveItemMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -560,6 +574,39 @@ export function useAdditemMutation(baseOptions?: Apollo.MutationHookOptions<Addi
 export type AdditemMutationHookResult = ReturnType<typeof useAdditemMutation>;
 export type AdditemMutationResult = Apollo.MutationResult<AdditemMutation>;
 export type AdditemMutationOptions = Apollo.BaseMutationOptions<AdditemMutation, AdditemMutationVariables>;
+export const UpdateItemDescriptionDocument = gql`
+    mutation UpdateItemDescription($id: String!, $description: String) {
+  update_Items_by_pk(pk_columns: {id: $id}, _set: {description: $description}) {
+    description
+  }
+}
+    `;
+export type UpdateItemDescriptionMutationFn = Apollo.MutationFunction<UpdateItemDescriptionMutation, UpdateItemDescriptionMutationVariables>;
+
+/**
+ * __useUpdateItemDescriptionMutation__
+ *
+ * To run a mutation, you first call `useUpdateItemDescriptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateItemDescriptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateItemDescriptionMutation, { data, loading, error }] = useUpdateItemDescriptionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useUpdateItemDescriptionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateItemDescriptionMutation, UpdateItemDescriptionMutationVariables>) {
+        return Apollo.useMutation<UpdateItemDescriptionMutation, UpdateItemDescriptionMutationVariables>(UpdateItemDescriptionDocument, baseOptions);
+      }
+export type UpdateItemDescriptionMutationHookResult = ReturnType<typeof useUpdateItemDescriptionMutation>;
+export type UpdateItemDescriptionMutationResult = Apollo.MutationResult<UpdateItemDescriptionMutation>;
+export type UpdateItemDescriptionMutationOptions = Apollo.BaseMutationOptions<UpdateItemDescriptionMutation, UpdateItemDescriptionMutationVariables>;
 export const RemoveItemDocument = gql`
     mutation RemoveItem($id: String!) {
   delete_Items_by_pk(id: $id) {
@@ -629,6 +676,13 @@ export const Additem = gql`
       description
       image_url
     }
+  }
+}
+    `;
+export const UpdateItemDescription = gql`
+    mutation UpdateItemDescription($id: String!, $description: String) {
+  update_Items_by_pk(pk_columns: {id: $id}, _set: {description: $description}) {
+    description
   }
 }
     `;

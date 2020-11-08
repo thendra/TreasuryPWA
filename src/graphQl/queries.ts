@@ -55,6 +55,16 @@ export const ADD_ITEM = gql`
   }
 `;
 
+export const UPDATE_ITEM_DESCRIPTION = gql`
+  mutation UpdateItemDescription($id: String!, $description: String) {
+    update_Items_by_pk(pk_columns: {id: $id}, _set: {description: $description}) {
+      description
+    }
+  }
+`;
+
+
+
 export const REMOVE_ITEM = gql`
   mutation RemoveItem($id: String!) {
     delete_Items_by_pk(id: $id) {
