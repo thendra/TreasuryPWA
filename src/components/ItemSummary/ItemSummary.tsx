@@ -43,6 +43,15 @@ const useStyles = makeStyles<Theme, Pick<IItemSummary, "image_url">>(
       [theme.breakpoints.down("xs")]: {
         width: "auto",
         flex: "1 1 100%",
+        "& $details": {
+          transform: "none",
+          "& a": {
+            transform: "none",
+          },
+        },
+        "& img": {
+          transform: "scale(1.2)",
+        },
       },
     },
     details: {
@@ -74,7 +83,6 @@ interface IItemSummary extends Items {
 
 const ItemSummary = ({ id, title, image_url, onRemove }: IItemSummary) => {
   const classes = useStyles({ image_url });
-  console.log(image_url);
   return (
     <Box className={classes.container}>
       <Box className={classes.card}>
