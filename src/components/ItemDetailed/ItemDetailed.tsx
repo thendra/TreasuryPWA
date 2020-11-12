@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Theme, Box, Typography, Hidden, TextField } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import { NetworkStatus } from "@apollo/client";
+import { NetworkStatus, useSubscription, gql } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useParams } from "react-router-dom";
@@ -25,10 +25,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+const DESCRIPTION_SUBSCRIPTION = gql`
+  subscription onDescUpdate($itemId: String!) {
+    Items_by_pk(id: $itemId) {
+      id
+      description
+    }
+  }
+`;
+
 const ItemDetailed = () => {
   const { id } = useParams();
 
-  const { data, networkStatus, error } = useGetItemByIdQuery({
+  const { subscribeToMore, data } = useGetItemByIdQuery({
     notifyOnNetworkStatusChange: true,
     variables: {
       itemId: id,
@@ -65,11 +74,29 @@ const ItemDetailed = () => {
     updateItemMutation({ variables: { ...updateDescValue } });
   };
 
+  const subscribeToDescriptionUpdates = () => {
+    subscribeToMore({
+      document: DESCRIPTION_SUBSCRIPTION,
+      variables: { itemId: id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const newFeedItem = subscriptionData.data.Items_by_pk?.description;
+        return Object.assign({}, prev, {
+          Item: {
+            description: newFeedItem,
+          },
+        });
+      },
+    });
+  };
+
+  subscribeToDescriptionUpdates();
+
   return (
     <Box className={classes.root}>
-      {networkStatus === NetworkStatus.refetch && "Refetching!"}
+      {/* {networkStatus === NetworkStatus.refetch && "Refetching!"}
       {networkStatus === NetworkStatus.loading && "loading..."}
-      {error && `Error! ${error.message}`}
+      {error && `Error! ${error.message}`} */}
       {item && (
         <>
           <Hidden mdUp>
