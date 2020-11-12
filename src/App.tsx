@@ -10,17 +10,12 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
-import { NetworkStatus } from "@apollo/client";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import AppsIcon from "@material-ui/icons/Apps";
-import { Items, useGetItemsQuery } from "./output-types";
-import { ITEMS } from "./graphQl";
 import AddItemForm from "./components/AddItemForm";
-import ItemSummary from "./components/ItemSummary";
+import Items from "./components/Items";
 import ItemDetailed from "./components/ItemDetailed";
-import { useMutation } from "@apollo/client";
-import { REMOVE_ITEM } from "./graphQl";
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
@@ -51,22 +46,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const App = () => {
-  // const { error, data, networkStatus } = useGetItemLinksQuery({
-  //   notifyOnNetworkStatusChange: true,
-  // });
-
-  const { data, networkStatus, error } = useGetItemsQuery({
-    notifyOnNetworkStatusChange: true,
-  });
-  const [removeItem] = useMutation(REMOVE_ITEM);
-
-  const handleRemoveItem = (id: String) => {
-    removeItem({
-      variables: { id },
-      refetchQueries: [{ query: ITEMS }],
-    });
-  };
-
   const [addItemFormOpen, setAddItemFormOpen] = useState(false);
   const navigate = useNavigate();
   const bottomNavConfig = {
@@ -95,27 +74,7 @@ const App = () => {
       </Hidden>
       <Box className={classes.app}>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Typography variant="h2">Your Items</Typography>
-                {networkStatus === NetworkStatus.refetch && "Refetching!"}
-                {networkStatus === NetworkStatus.loading && "loading..."}
-                {error && `Error! ${error.message}`}
-                <Box display="flex" flexWrap="wrap" justifyContent="center">
-                  {data?.Items.map(({ id, title, image_url }: Items) => (
-                    <ItemSummary
-                      id={id}
-                      title={title}
-                      image_url={image_url}
-                      onRemove={handleRemoveItem}
-                    />
-                  ))}
-                </Box>
-              </>
-            }
-          />
+          <Route path="/" element={<Items />} />
           <Route path="/*">
             <Route path=":id" element={<ItemDetailed />} />
           </Route>
