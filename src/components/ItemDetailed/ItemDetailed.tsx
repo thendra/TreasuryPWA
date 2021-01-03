@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Theme, Box, Typography, Hidden, TextField } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import { NetworkStatus, useSubscription, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useParams } from "react-router-dom";
