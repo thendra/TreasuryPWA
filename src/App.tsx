@@ -13,6 +13,9 @@ import HomeIcon from "@material-ui/icons/Home";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import AppsIcon from "@material-ui/icons/Apps";
+import { useAuth0 } from "@auth0/auth0-react";
+import LoginButton from "./components/LoginButton";
+import LogoutButton from "./components/LogoutButton";
 import AddItemForm from "./components/AddItemForm";
 import Items from "./components/Items";
 import ItemDetailed from "./components/ItemDetailed";
@@ -60,6 +63,8 @@ const App = () => {
   };
   const classes = useStyles();
 
+  const { user, isAuthenticated } = useAuth0();
+
   return (
     <Box>
       <Hidden xsDown>
@@ -74,9 +79,35 @@ const App = () => {
       </Hidden>
       <Box className={classes.app}>
         <Routes>
-          <Route path="/" element={<Items />} />
-          <Route path="/*">
+          <Route path="/">
+            {isAuthenticated ? (
+              <Box>
+                <div>
+                  <img src={user.picture} alt={user?.name} />
+                </div>
+                <h2>{user?.name}</h2>
+                <p>{user?.email}</p>
+                <Items />
+                <LogoutButton />
+              </Box>
+            ) : (
+              <Box>
+                <Box
+                  maxWidth="800px"
+                  margin="auto"
+                  paddingTop="100px"
+                  paddingBottom="100px"
+                >
+                  <Typography variant="h2">
+                    Please Authenticate yourself to view your collection
+                  </Typography>
+                </Box>
+                <LoginButton />
+              </Box>
+            )}
             <Route path=":id" element={<ItemDetailed />} />
+            <Route path="login" element={<LoginButton />} />
+            <Route path="logout" element={<LogoutButton />} />
           </Route>
         </Routes>
         <Hidden xsDown>

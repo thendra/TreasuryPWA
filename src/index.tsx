@@ -13,6 +13,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 const httpLink = new HttpLink({
   uri: "https://cheerful-possum-15.hasura.app/v1/graphql",
@@ -45,11 +46,17 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <Router>
-        <App />
-      </Router>
-    </ApolloProvider>
+    <Auth0Provider
+      domain="dev-mipf43mo.eu.auth0.com"
+      clientId="cAjFZxpGeOuCMXFeNYqT87oQuLL2UgEI"
+      redirectUri="http://localhost:3000/"
+    >
+      <ApolloProvider client={client}>
+        <Router>
+          <App />
+        </Router>
+      </ApolloProvider>
+    </Auth0Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
