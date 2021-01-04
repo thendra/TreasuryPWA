@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 
 export const ITEMS = gql`
   query GetItems {
+    accessToken @client
     Items {
       id
       title

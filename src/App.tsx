@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import {
   Box,
@@ -8,6 +8,7 @@ import {
   Hidden,
   Fab,
 } from "@material-ui/core";
+import { makeVar } from "@apollo/client";
 import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
@@ -48,7 +49,28 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+export const accessToken = makeVar<string>("");
+
 const App = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  useEffect(() => {
+    const getAccess = async () => {
+      const domain = "dev-mipf43mo.eu.auth0.com";
+
+      try {
+        const token = await getAccessTokenSilently({
+          audience: `https://${domain}/api/v2/`,
+          scope: "read:current_user",
+        });
+        accessToken(token);
+        console.log(accessToken());
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+    getAccess();
+  });
+
   const [addItemFormOpen, setAddItemFormOpen] = useState(false);
   const navigate = useNavigate();
   const bottomNavConfig = {
@@ -65,6 +87,7 @@ const App = () => {
 
   const { user, isAuthenticated } = useAuth0();
 
+  console.log(user);
   return (
     <Box>
       <Hidden xsDown>

@@ -49,7 +49,6 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
     setDescription("");
     setImageUrl("");
   };
-  console.log(imageUrl);
 
   return (
     <Dialog open={open} onClose={onClose}>
