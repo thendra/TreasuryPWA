@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import {
   Box,
@@ -49,28 +49,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const accessToken = makeVar<string>("");
+export const userId = makeVar<string>("");
 
 const App = () => {
-  const { getAccessTokenSilently } = useAuth0();
-  useEffect(() => {
-    const getAccess = async () => {
-      const domain = "dev-mipf43mo.eu.auth0.com";
-
-      try {
-        const token = await getAccessTokenSilently({
-          audience: `https://${domain}/api/v2/`,
-          scope: "read:current_user",
-        });
-        accessToken(token);
-        console.log(accessToken());
-      } catch (e) {
-        console.log(e.message);
-      }
-    };
-    getAccess();
-  });
-
+  const { user, isAuthenticated } = useAuth0();
   const [addItemFormOpen, setAddItemFormOpen] = useState(false);
   const navigate = useNavigate();
   const bottomNavConfig = {
@@ -85,9 +67,6 @@ const App = () => {
   };
   const classes = useStyles();
 
-  const { user, isAuthenticated } = useAuth0();
-
-  console.log(user);
   return (
     <Box>
       <Hidden xsDown>
@@ -134,15 +113,17 @@ const App = () => {
           </Route>
         </Routes>
         <Hidden xsDown>
-          <Box position="fixed" bottom={50} right={40}>
-            <Fab
-              onClick={() => setAddItemFormOpen(true)}
-              color="primary"
-              aria-label="add"
-            >
-              <AddIcon />
-            </Fab>
-          </Box>
+          {isAuthenticated && (
+            <Box position="fixed" bottom={50} right={40}>
+              <Fab
+                onClick={() => setAddItemFormOpen(true)}
+                color="primary"
+                aria-label="add"
+              >
+                <AddIcon />
+              </Fab>
+            </Box>
+          )}
         </Hidden>
         <Hidden smUp>
           <BottomNavigation

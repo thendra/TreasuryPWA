@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const ITEMS = gql`
   query GetItems {
-    accessToken @client
+    userId @client
     Items {
       id
       title
@@ -37,6 +37,7 @@ export const ADD_ITEM = gql`
     $title: String
     $description: String
     $image_url: String
+    $user_id: String
   ) {
     insert_Items(
       objects: {
@@ -44,6 +45,7 @@ export const ADD_ITEM = gql`
         title: $title
         description: $description
         image_url: $image_url
+        created_by: $user_id
       }
     ) {
       returning {
@@ -51,6 +53,7 @@ export const ADD_ITEM = gql`
         title
         description
         image_url
+        created_by
       }
     }
   }

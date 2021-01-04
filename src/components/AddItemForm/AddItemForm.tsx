@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 import { useMutation } from "@apollo/client";
+import { userId } from "../../App";
 import ImageUpload from "../ImageUpload";
 import { ADD_ITEM, ITEMS } from "../../graphQl";
 
@@ -42,6 +43,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
         title: title,
         description: description,
         image_url: imageUrl,
+        user_id: userId(),
       },
       refetchQueries: [{ query: ITEMS }],
     });
