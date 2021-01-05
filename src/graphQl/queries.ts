@@ -38,6 +38,7 @@ export const ADD_ITEM = gql`
     $description: String
     $image_url: String
     $user_id: String
+    $is_public: Boolean
   ) {
     insert_Items(
       objects: {
@@ -46,6 +47,7 @@ export const ADD_ITEM = gql`
         description: $description
         image_url: $image_url
         created_by: $user_id
+        is_public: $is_public
       }
     ) {
       returning {
@@ -54,6 +56,7 @@ export const ADD_ITEM = gql`
         description
         image_url
         created_by
+        is_public
       }
     }
   }

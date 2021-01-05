@@ -6,6 +6,7 @@ import {
   Typography,
   Dialog,
   CircularProgress,
+  Checkbox,
 } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 import { useMutation } from "@apollo/client";
@@ -24,6 +25,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
+  const [isPublic, setIsPublic] = useState(false);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -33,6 +35,9 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
   const handleDescChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setDescription(event.target.value);
+  };
+  const handleIsPublicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsPublic(event.target.checked);
   };
 
   const handleAddItem = (event: React.FormEvent) => {
@@ -44,6 +49,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
         description: description,
         image_url: imageUrl,
         user_id: userId(),
+        is_public: isPublic,
       },
       refetchQueries: [{ query: ITEMS }],
     });
@@ -96,6 +102,19 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
               setImageLoading={setImageLoading}
               onUpload={setImageUrl}
             />
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            pb={2}
+          >
+            <Checkbox
+              checked={isPublic}
+              onChange={handleIsPublicChange}
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+            <Typography variant="caption">Make Public</Typography>
           </Box>
           <Box display="flex" justifyContent="center" pb={2}>
             <Button

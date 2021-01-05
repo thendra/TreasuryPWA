@@ -18,6 +18,7 @@ export type Items = {
   id: Scalars['String'];
   image_url?: Maybe<Scalars['String']>;
   title: Scalars['String'];
+  is_public?: Scalars['Boolean'];
 };
 
 /** aggregated selection of "Items" */
@@ -356,7 +357,7 @@ export type GetItemsQuery = (
   { __typename?: 'query_root' }
   & { Items: Array<(
     { __typename?: 'Items' }
-    & Pick<Items, 'id' | 'title' | 'description' | 'image_url'>
+    & Pick<Items, 'id' | 'title' | 'description' | 'image_url' | 'is_public'>
   )> }
 );
 
