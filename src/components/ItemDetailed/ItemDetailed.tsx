@@ -12,12 +12,12 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useParams } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 import { GET_ITEM_BY_ID, UPDATE_ITEM_DESCRIPTION } from "../../graphQL/queries";
 import {
   GetItemByIdQuery,
   UpdateItemDescriptionMutation,
 } from "../../output-types";
+import { userInfo } from "../AppProvider";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -45,7 +45,7 @@ const DESCRIPTION_SUBSCRIPTION = gql`
 
 const ItemDetailed = () => {
   const { id } = useParams();
-  const { user } = useAuth0();
+  const { user } = userInfo();
 
   const { subscribeToMore, data } = useQuery<GetItemByIdQuery>(GET_ITEM_BY_ID, {
     variables: {
@@ -53,12 +53,9 @@ const ItemDetailed = () => {
     },
     notifyOnNetworkStatusChange: true,
   });
-
   const classes = useStyles();
-
   const item = data?.Items_by_pk;
   const canEdit = item?.created_by === user?.sub;
-
   const [editMode, setEditMode] = useState(false);
   const [updateItemMutation] = useMutation<UpdateItemDescriptionMutation>(
     UPDATE_ITEM_DESCRIPTION,
@@ -74,7 +71,6 @@ const ItemDetailed = () => {
     id: id,
     description: item?.description,
   });
-
   useEffect(
     () =>
       setDescValues({

@@ -1,3 +1,11 @@
+scalar user
+
+type UserInfo {
+  isAuthenticated: Boolean!
+  userId: String!
+  user: user!
+}
+
 extend type query_root {
-  userId: String
+  userInfo: UserInfo!
 }

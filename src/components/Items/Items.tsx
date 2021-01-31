@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
-import { useAuth0 } from "@auth0/auth0-react";
 import { REMOVE_ITEM, GET_ITEMS } from "../../graphQL/queries";
 import {
   Items as IItems,
@@ -9,13 +8,12 @@ import {
   RemoveItemMutation,
 } from "../../output-types";
 import ItemSummary from "../ItemSummary";
+import { userInfo } from "../AppProvider";
 
 const Items = () => {
   const { data, networkStatus, error } = useQuery<GetItemsQuery>(GET_ITEMS, {
     notifyOnNetworkStatusChange: true,
   });
-  console.log(error);
-  console.log(data);
 
   const [removeItem] = useMutation<RemoveItemMutation>(REMOVE_ITEM);
   const handleRemoveItem = (id: String) => {
@@ -24,8 +22,7 @@ const Items = () => {
       refetchQueries: [{ query: GET_ITEMS }],
     });
   };
-
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated, user } = userInfo();
 
   return (
     <Box>

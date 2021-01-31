@@ -13,19 +13,13 @@ import HomeIcon from "@material-ui/icons/Home";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import AppsIcon from "@material-ui/icons/Apps";
-import { useAuth0 } from "@auth0/auth0-react";
+import { userInfo } from "./components/AppProvider";
 import LoginButton from "./components/LoginButton";
 import LogoutButton from "./components/LogoutButton";
 import AddItemForm from "./components/AddItemForm";
 import Items from "./components/Items";
 import ItemDetailed from "./components/ItemDetailed";
-import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
-import { REMOVE_ITEM, GET_ITEMS } from "./graphQL/queries";
-import {
-  Items as IItems,
-  GetItemsQuery,
-  RemoveItemMutation,
-} from "./output-types";
+import { useReactiveVar } from "@apollo/client";
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
@@ -56,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const App = () => {
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated } = useReactiveVar(userInfo);
   const [addItemFormOpen, setAddItemFormOpen] = useState(false);
   const navigate = useNavigate();
   const bottomNavConfig = {
@@ -122,41 +116,43 @@ const App = () => {
             <Route path="logout" element={<LogoutButton />} />
           </Route>
         </Routes>
-        <Hidden xsDown>
-          {isAuthenticated && (
-            <Box position="fixed" bottom={50} right={40}>
-              <Fab
-                onClick={() => setAddItemFormOpen(true)}
-                color="primary"
-                aria-label="add"
+        {isAuthenticated && (
+          <>
+            <Hidden xsDown>
+              <Box position="fixed" bottom={50} right={40}>
+                <Fab
+                  onClick={() => setAddItemFormOpen(true)}
+                  color="primary"
+                  aria-label="add"
+                >
+                  <AddIcon />
+                </Fab>
+              </Box>
+            </Hidden>
+            <Hidden smUp>
+              <BottomNavigation
+                className={classes.bottomNav}
+                onChange={handleBottomNav}
+                showLabels
               >
-                <AddIcon />
-              </Fab>
-            </Box>
-          )}
-        </Hidden>
-        <Hidden smUp>
-          <BottomNavigation
-            className={classes.bottomNav}
-            onChange={handleBottomNav}
-            showLabels
-          >
-            <BottomNavigationAction
-              value="addItem"
-              label="Add Item"
-              icon={<AddIcon />}
+                <BottomNavigationAction
+                  value="addItem"
+                  label="Add Item"
+                  icon={<AddIcon />}
+                />
+                <BottomNavigationAction
+                  value="allItems"
+                  label="All Items"
+                  icon={<AppsIcon />}
+                />
+              </BottomNavigation>
+            </Hidden>
+            <AddItemForm
+              open={addItemFormOpen}
+              onClose={() => setAddItemFormOpen(false)}
             />
-            <BottomNavigationAction
-              value="allItems"
-              label="All Items"
-              icon={<AppsIcon />}
-            />
-          </BottomNavigation>
-        </Hidden>
-        <AddItemForm
-          open={addItemFormOpen}
-          onClose={() => setAddItemFormOpen(false)}
-        />
+          </>
+        )}
       </Box>
     </Box>
   );

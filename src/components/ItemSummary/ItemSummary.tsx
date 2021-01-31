@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { Box, Fab, Typography, Theme } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Items } from "../../output-types";
+import { userInfo } from "../AppProvider";
 
 const useStyles = makeStyles<Theme, Pick<IItemSummary, "image_url">>(
   (theme: Theme) => ({
@@ -89,7 +89,7 @@ const ItemSummary = ({
   onRemove,
   created_by,
 }: IItemSummary) => {
-  const { user } = useAuth0();
+  const { user } = userInfo();
   const classes = useStyles({ image_url });
   const canDelete = created_by === user?.sub;
 

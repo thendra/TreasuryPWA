@@ -9,6 +9,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   timestamptz: any;
+  user: any;
 };
 
 /** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
@@ -369,7 +370,7 @@ export type Query_Root = {
   Items_aggregate: Items_Aggregate;
   /** fetch data from the table: "Items" using primary key columns */
   Items_by_pk?: Maybe<Items>;
-  userId?: Maybe<Scalars['String']>;
+  userInfo: UserInfo;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -670,13 +671,23 @@ export enum Users_Update_Column {
   Name = 'name'
 }
 
+
+export type UserInfo = {
+  __typename?: 'UserInfo';
+  isAuthenticated: Scalars['Boolean'];
+  userId: Scalars['String'];
+  user: Scalars['user'];
+};
+
 export type GetItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetItemsQuery = (
   { __typename?: 'query_root' }
-  & Pick<Query_Root, 'userId'>
-  & { Items: Array<(
+  & { userInfo: (
+    { __typename?: 'UserInfo' }
+    & Pick<UserInfo, 'user' | 'isAuthenticated' | 'userId'>
+  ), Items: Array<(
     { __typename?: 'Items' }
     & Pick<Items, 'id' | 'title' | 'description' | 'image_url' | 'created_by' | 'is_public'>
   )> }
@@ -757,7 +768,11 @@ export type RemoveItemMutation = (
 
 export const GetItems = gql`
     query GetItems {
-  userId @client
+  userInfo @client {
+    user
+    isAuthenticated
+    userId
+  }
   Items {
     id
     title
