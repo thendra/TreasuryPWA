@@ -10,10 +10,10 @@ import {
 } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 import { useMutation } from "@apollo/client";
-import { userId } from "../../components/AppProvider/AppProvider";
+import { userInfo } from "../../components/AppProvider";
 import ImageUpload from "../ImageUpload";
 import { ADD_ITEM, GET_ITEMS } from "../../graphQL/queries";
-import { AdditemMutation } from "../../output-types";
+import { AdditemMutation, AdditemMutationVariables } from "../../output-types";
 
 interface IAddItemForm {
   open: boolean;
@@ -21,6 +21,7 @@ interface IAddItemForm {
 }
 
 const AddItemForm = ({ open, onClose }: IAddItemForm) => {
+  const { userId } = userInfo();
   const [addItem] = useMutation<AdditemMutation>(ADD_ITEM);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -49,7 +50,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
         title: title,
         description: description,
         image_url: imageUrl,
-        user_id: userId(),
+        user_id: userId,
         is_public: isPublic,
       },
       refetchQueries: [{ query: GET_ITEMS }],
