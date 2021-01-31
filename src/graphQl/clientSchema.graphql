@@ -1,0 +1,3 @@
+extend type query_root {
+  userId: String
+}

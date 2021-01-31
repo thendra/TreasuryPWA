@@ -8,7 +8,6 @@ import {
   Hidden,
   Fab,
 } from "@material-ui/core";
-import { makeVar } from "@apollo/client";
 import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
@@ -20,6 +19,13 @@ import LogoutButton from "./components/LogoutButton";
 import AddItemForm from "./components/AddItemForm";
 import Items from "./components/Items";
 import ItemDetailed from "./components/ItemDetailed";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
+import { REMOVE_ITEM, GET_ITEMS } from "./graphQL/queries";
+import {
+  Items as IItems,
+  GetItemsQuery,
+  RemoveItemMutation,
+} from "./output-types";
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
@@ -49,8 +55,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const userId = makeVar<string>("");
-
 const App = () => {
   const { user, isAuthenticated } = useAuth0();
   const [addItemFormOpen, setAddItemFormOpen] = useState(false);
@@ -59,6 +63,7 @@ const App = () => {
     addItem: () => setAddItemFormOpen(true),
     allItems: () => navigate("/"),
   };
+
   const handleBottomNav = (
     event: React.ChangeEvent<{}>,
     newValue: keyof typeof bottomNavConfig
@@ -86,7 +91,7 @@ const App = () => {
               {isAuthenticated ? (
                 <Box>
                   <div>
-                    <img src={user.picture} alt={user?.name} />
+                    <img src={user?.picture} alt={user?.name} />
                   </div>
                   <h2>{user?.name}</h2>
                   <p>{user?.email}</p>
@@ -101,13 +106,16 @@ const App = () => {
                     paddingBottom="100px"
                   >
                     <Typography variant="h2">
-                      Please Authenticate yourself to view your collection
+                      Welcome to Treasury, please authenticate yourself to view
+                      your collection
                     </Typography>
                   </Box>
                   <LoginButton />
                 </Box>
               )}
-              <Items />
+              <Box paddingTop={8}>
+                <Items />
+              </Box>
             </Box>
             <Route path=":id" element={<ItemDetailed />} />
             <Route path="login" element={<LoginButton />} />

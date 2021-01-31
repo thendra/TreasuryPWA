@@ -1,25 +1,31 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import { NetworkStatus, useMutation } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import { useAuth0 } from "@auth0/auth0-react";
-import { REMOVE_ITEM, ITEMS } from "../../graphQl";
-import { Items as IItems, useGetItemsQuery } from "../../output-types";
+import { REMOVE_ITEM, GET_ITEMS } from "../../graphQL/queries";
+import {
+  Items as IItems,
+  GetItemsQuery,
+  RemoveItemMutation,
+} from "../../output-types";
 import ItemSummary from "../ItemSummary";
 
 const Items = () => {
-  const { data, networkStatus, error } = useGetItemsQuery({
+  const { data, networkStatus, error } = useQuery<GetItemsQuery>(GET_ITEMS, {
     notifyOnNetworkStatusChange: true,
   });
+  console.log(error);
+  console.log(data);
 
-  const [removeItem] = useMutation(REMOVE_ITEM);
+  const [removeItem] = useMutation<RemoveItemMutation>(REMOVE_ITEM);
   const handleRemoveItem = (id: String) => {
     removeItem({
       variables: { id },
-      refetchQueries: [{ query: ITEMS }],
+      refetchQueries: [{ query: GET_ITEMS }],
     });
   };
 
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
 
   return (
     <Box>
@@ -27,12 +33,13 @@ const Items = () => {
         <Box>
           <Typography variant="h2">Your Items</Typography>
           <Box display="flex" flexWrap="wrap" justifyContent="center">
-            {data?.Items.filter((item) => !!item.is_public).map(
-              ({ id, title, image_url }: IItems) => (
+            {data?.Items.filter((item) => item.created_by === user?.sub).map(
+              ({ id, title, image_url, created_by }: IItems) => (
                 <ItemSummary
                   id={id}
                   title={title}
                   image_url={image_url}
+                  created_by={created_by}
                   onRemove={handleRemoveItem}
                 />
               )
@@ -46,14 +53,17 @@ const Items = () => {
         {networkStatus === NetworkStatus.loading && "loading..."}
         {error && `Error! ${error.message}`}
         <Box display="flex" flexWrap="wrap" justifyContent="center">
-          {data?.Items.map(({ id, title, image_url }: IItems) => (
-            <ItemSummary
-              id={id}
-              title={title}
-              image_url={image_url}
-              onRemove={handleRemoveItem}
-            />
-          ))}
+          {data?.Items.filter((item) => !!item.is_public).map(
+            ({ id, title, image_url, created_by }: IItems) => (
+              <ItemSummary
+                id={id}
+                title={title}
+                image_url={image_url}
+                created_by={created_by}
+                onRemove={handleRemoveItem}
+              />
+            )
+          )}
         </Box>
       </Box>
     </Box>

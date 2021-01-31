@@ -1,14 +1,16 @@
 overwrite: true
 schema:
+  - ./src/graphQL/clientSchema.graphql
+
   - https://cheerful-possum-15.hasura.app/v1/graphql:
       headers:
         content-type: application/json
-documents: "src/graphQl/queries.ts"
+        x-hasura-admin-secret: hendra
+        x-hasura-role: admin
+documents: "src/graphQL/queries.ts"
 generates:
   src/output-types.ts:
     plugins:
       - "typescript"
       - "typescript-operations"
-      - "typescript-react-apollo"
       - "typescript-document-nodes"
-      - "fragment-matcher"

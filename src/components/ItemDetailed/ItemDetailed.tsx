@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Theme, Box, Typography, Hidden, TextField } from "@material-ui/core";
+import {
+  Theme,
+  Box,
+  Typography,
+  Hidden,
+  TextField,
+  Checkbox,
+} from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import { gql } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { GET_ITEM_BY_ID, UPDATE_ITEM_DESCRIPTION } from "../../graphQL/queries";
 import {
-  useGetItemByIdQuery,
-  useUpdateItemDescriptionMutation,
+  GetItemByIdQuery,
+  UpdateItemDescriptionMutation,
 } from "../../output-types";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -36,24 +45,30 @@ const DESCRIPTION_SUBSCRIPTION = gql`
 
 const ItemDetailed = () => {
   const { id } = useParams();
+  const { user } = useAuth0();
 
-  const { subscribeToMore, data } = useGetItemByIdQuery({
-    notifyOnNetworkStatusChange: true,
+  const { subscribeToMore, data } = useQuery<GetItemByIdQuery>(GET_ITEM_BY_ID, {
     variables: {
       itemId: id,
     },
+    notifyOnNetworkStatusChange: true,
   });
+
   const classes = useStyles();
 
   const item = data?.Items_by_pk;
+  const canEdit = item?.created_by === user?.sub;
 
   const [editMode, setEditMode] = useState(false);
-  const [updateItemMutation] = useUpdateItemDescriptionMutation({
-    variables: {
-      id,
-      description: item?.description,
-    },
-  });
+  const [updateItemMutation] = useMutation<UpdateItemDescriptionMutation>(
+    UPDATE_ITEM_DESCRIPTION,
+    {
+      variables: {
+        id,
+        description: item?.description,
+      },
+    }
+  );
 
   const [updateDescValue, setDescValues] = useState({
     id: id,
@@ -72,6 +87,10 @@ const ItemDetailed = () => {
   const handleDescChange = () => {
     setEditMode(false);
     updateItemMutation({ variables: { ...updateDescValue } });
+  };
+
+  const handleIsPublicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    updateItemMutation({ variables: { is_public: event.target.checked } });
   };
 
   const subscribeToDescriptionUpdates = () => {
@@ -114,6 +133,10 @@ const ItemDetailed = () => {
               <Typography display="block" align="left" variant="h1">
                 {item?.title}
               </Typography>
+              <Checkbox
+                checked={item?.is_public || false}
+                onChange={handleIsPublicChange}
+              />
             </Hidden>
             {!editMode ? (
               <Box display="flex">
@@ -123,7 +146,7 @@ const ItemDetailed = () => {
                       "Click on the edit button to add a description..."}
                   </Typography>
                 </Box>
-                <EditIcon onClick={() => setEditMode(true)} />
+                {canEdit && <EditIcon onClick={() => setEditMode(true)} />}
               </Box>
             ) : (
               <ClickAwayListener onClickAway={handleDescChange}>

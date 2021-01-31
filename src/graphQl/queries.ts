@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const ITEMS = gql`
+export const GET_ITEMS = gql`
   query GetItems {
     userId @client
     Items {
@@ -8,6 +8,8 @@ export const ITEMS = gql`
       title
       description
       image_url
+      created_by
+      is_public
     }
   }
 `;
@@ -19,6 +21,8 @@ export const GET_ITEM_BY_ID = gql`
       id
       image_url
       title
+      created_by
+      is_public
     }
   }
 `;
@@ -64,13 +68,14 @@ export const ADD_ITEM = gql`
 
 export const UPDATE_ITEM_DESCRIPTION = gql`
   mutation UpdateItemDescription($id: String!, $description: String) {
-    update_Items_by_pk(pk_columns: {id: $id}, _set: {description: $description}) {
+    update_Items_by_pk(
+      pk_columns: { id: $id }
+      _set: { description: $description }
+    ) {
       description
     }
   }
 `;
-
-
 
 export const REMOVE_ITEM = gql`
   mutation RemoveItem($id: String!) {

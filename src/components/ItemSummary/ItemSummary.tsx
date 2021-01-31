@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Box, Fab, Typography, Theme } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Items } from "../../output-types";
 
 const useStyles = makeStyles<Theme, Pick<IItemSummary, "image_url">>(
@@ -81,8 +82,17 @@ interface IItemSummary extends Items {
   onRemove: (id: string) => void;
 }
 
-const ItemSummary = ({ id, title, image_url, onRemove }: IItemSummary) => {
+const ItemSummary = ({
+  id,
+  title,
+  image_url,
+  onRemove,
+  created_by,
+}: IItemSummary) => {
+  const { user } = useAuth0();
   const classes = useStyles({ image_url });
+  const canDelete = created_by === user?.sub;
+
   return (
     <Box className={classes.container}>
       <Box className={classes.card}>
@@ -91,9 +101,15 @@ const ItemSummary = ({ id, title, image_url, onRemove }: IItemSummary) => {
         </Link>
         <Box className={classes.details}>
           <Typography variant="h5">{title}</Typography>
-          <Fab onClick={() => onRemove(id)} color="primary" aria-label="delete">
-            <DeleteIcon />
-          </Fab>
+          {canDelete && (
+            <Fab
+              onClick={() => onRemove(id)}
+              color="primary"
+              aria-label="delete"
+            >
+              <DeleteIcon />
+            </Fab>
+          )}
         </Box>
       </Box>
     </Box>

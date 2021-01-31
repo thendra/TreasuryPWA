@@ -10,7 +10,9 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
-import { userId } from "../../App";
+import { makeVar } from "@apollo/client";
+
+export const userId = makeVar<string>("");
 
 export const typePolicies: TypePolicies = {
   Query: {
@@ -88,7 +90,7 @@ const AppProvider = ({ children }: IAppProvider) => {
   const client = new ApolloClient({
     uri: "https://cheerful-possum-15.hasura.app/v1/graphql",
     link: splitLink,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ typePolicies }),
   });
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
