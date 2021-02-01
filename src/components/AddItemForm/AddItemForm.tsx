@@ -13,7 +13,7 @@ import { useMutation } from "@apollo/client";
 import { userInfo } from "../../components/AppProvider";
 import ImageUpload from "../ImageUpload";
 import { ADD_ITEM, GET_ITEMS } from "../../graphQL/queries";
-import { AdditemMutation, AdditemMutationVariables } from "../../output-types";
+import { AdditemMutation } from "../../output-types";
 
 interface IAddItemForm {
   open: boolean;
