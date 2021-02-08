@@ -6,7 +6,14 @@ const LogoutButton = () => {
   const { logout } = useAuth0();
 
   return (
-    <Button onClick={() => logout({ returnTo: "http://localhost:3000/" })}>
+    // <Button onClick={() => logout({ returnTo: "http://localhost:3000/" })}>
+    //   Log Out
+    // </Button>
+    <Button
+      onClick={() =>
+        logout({ returnTo: "https://sharp-nobel-706ca3.netlify.app/" })
+      }
+    >
       Log Out
     </Button>
   );

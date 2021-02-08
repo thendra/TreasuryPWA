@@ -12,7 +12,8 @@ ReactDOM.render(
     <Auth0Provider
       domain="dev-mipf43mo.eu.auth0.com"
       clientId="cAjFZxpGeOuCMXFeNYqT87oQuLL2UgEI"
-      redirectUri="http://localhost:3000/"
+      // redirectUri="http://localhost:3000/"
+      redirectUri="https://sharp-nobel-706ca3.netlify.app/"
       audience="https://dev-mipf43mo.eu.auth0.com/api/v2/"
       scope="read:current_user update:current_user_metadata"
     >
