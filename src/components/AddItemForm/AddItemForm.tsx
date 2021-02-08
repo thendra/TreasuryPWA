@@ -21,7 +21,7 @@ interface IAddItemForm {
 }
 
 const AddItemForm = ({ open, onClose }: IAddItemForm) => {
-  const { userId } = userInfo();
+  const { user } = userInfo();
   const [addItem] = useMutation<AdditemMutation>(ADD_ITEM);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -50,7 +50,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
         title: title,
         description: description,
         image_url: imageUrl,
-        user_id: userId,
+        user_id: user?.id,
         is_public: isPublic,
       },
       refetchQueries: [{ query: GET_ITEMS }],

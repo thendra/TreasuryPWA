@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useCallback } from "react";
 import {
   ApolloClient,
   InMemoryCache,
@@ -6,6 +6,7 @@ import {
   split,
   HttpLink,
   TypePolicies,
+  useReactiveVar,
 } from "@apollo/client";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getMainDefinition } from "@apollo/client/utilities";
@@ -15,19 +16,17 @@ import { makeVar } from "@apollo/client";
 export const userInfo = makeVar<{
   user: any;
   isAuthenticated: boolean;
-  userId: string;
 }>({
   user: "",
   isAuthenticated: false,
-  userId: "",
 });
 
 export const typePolicies: TypePolicies = {
   Query: {
     fields: {
-      userInfo: {
+      userId: {
         read() {
-          return userInfo();
+          return userInfo().user?.sub || "";
         },
       },
     },
@@ -40,44 +39,55 @@ interface IAppProvider {
 
 const AppProvider = ({ children }: IAppProvider) => {
   const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
-  const [accessToken, setAccessToken] = useState("");
-  const getAccess = async () => {
+  const userInfoVar = useReactiveVar(userInfo);
+
+  useEffect(() => {
+    userInfo({
+      user: user,
+      isAuthenticated: isAuthenticated,
+    });
+    // const userIdParam: string =
+    // localStorage.getItem("USERID") || userInfoVar.user?.sub;
+    // localStorage.setItem("USERID", userIdParam);
+  }, [user, isAuthenticated, userInfoVar.user]);
+
+  const getAccess = useCallback(async () => {
     const domain = "dev-mipf43mo.eu.auth0.com";
 
     try {
-      const token = await getAccessTokenSilently({
-        audience: `https://${domain}/api/v2/`,
-        scope: "read:current_user",
-      });
-
-      setAccessToken(token);
-      userInfo({ user, isAuthenticated, userId: user?.sub });
+      const tokenParam =
+        localStorage.getItem("TOKEN") ||
+        (await getAccessTokenSilently({
+          audience: `https://${domain}/api/v2/`,
+          scope: "read:current_user",
+        }));
+      localStorage.setItem("TOKEN", tokenParam);
     } catch (e) {
       console.log(e.message);
     }
-  };
+  }, [getAccessTokenSilently]);
   getAccess();
 
   const httpLink = new HttpLink({
     uri: "https://cheerful-possum-15.hasura.app/v1/graphql",
     headers: {
-      authorization: `Bearer ${accessToken}`,
+      authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
       "x-hasura-admin-secret": "hendra",
       "x-hasura-role": "user",
-      "x-hasura-user-id": `${user?.sub}`,
+      "x-hasura-user-id": `${userInfoVar.user?.sub}`,
     },
   });
 
   const wsLink = new WebSocketLink({
-    uri: "ws://cheerful-possum-15.hasura.app/v1/graphql",
+    uri: "wss://cheerful-possum-15.hasura.app/v1/graphql",
     options: {
       reconnect: true,
       connectionParams: {
         headers: {
-          authorization: `Bearer ${accessToken}`,
+          authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
           "x-hasura-admin-secret": "hendra",
           "x-hasura-role": "user",
-          "x-hasura-user-id": `${user?.sub}`,
+          "x-hasura-user-id": `${userInfoVar.user?.sub}`,
         },
       },
     },

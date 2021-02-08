@@ -370,6 +370,7 @@ export type Query_Root = {
   Items_aggregate: Items_Aggregate;
   /** fetch data from the table: "Items" using primary key columns */
   Items_by_pk?: Maybe<Items>;
+  userId: Scalars['String'];
   userInfo: UserInfo;
   /** fetch data from the table: "users" */
   users: Array<Users>;
@@ -675,7 +676,6 @@ export enum Users_Update_Column {
 export type UserInfo = {
   __typename?: 'UserInfo';
   isAuthenticated: Scalars['Boolean'];
-  userId: Scalars['String'];
   user: Scalars['user'];
 };
 
@@ -684,10 +684,8 @@ export type GetItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetItemsQuery = (
   { __typename?: 'query_root' }
-  & { userInfo: (
-    { __typename?: 'UserInfo' }
-    & Pick<UserInfo, 'user' | 'isAuthenticated' | 'userId'>
-  ), Items: Array<(
+  & Pick<Query_Root, 'userId'>
+  & { Items: Array<(
     { __typename?: 'Items' }
     & Pick<Items, 'id' | 'title' | 'description' | 'image_url' | 'created_by' | 'is_public'>
   )> }
@@ -700,6 +698,7 @@ export type GetItemByIdQueryVariables = Exact<{
 
 export type GetItemByIdQuery = (
   { __typename?: 'query_root' }
+  & Pick<Query_Root, 'userId'>
   & { Items_by_pk?: Maybe<(
     { __typename?: 'Items' }
     & Pick<Items, 'description' | 'id' | 'image_url' | 'title' | 'created_by' | 'is_public'>
@@ -711,6 +710,7 @@ export type GetItemLinksQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetItemLinksQuery = (
   { __typename?: 'query_root' }
+  & Pick<Query_Root, 'userId'>
   & { Items: Array<(
     { __typename?: 'Items' }
     & Pick<Items, 'id'>
@@ -768,11 +768,7 @@ export type RemoveItemMutation = (
 
 export const GetItems = gql`
     query GetItems {
-  userInfo @client {
-    user
-    isAuthenticated
-    userId
-  }
+  userId @client
   Items {
     id
     title
@@ -785,6 +781,7 @@ export const GetItems = gql`
     `;
 export const GetItemById = gql`
     query GetItemById($itemId: String!) {
+  userId @client
   Items_by_pk(id: $itemId) {
     description
     id
@@ -797,6 +794,7 @@ export const GetItemById = gql`
     `;
 export const GetItemLinks = gql`
     query GetItemLinks {
+  userId @client
   Items {
     id
   }

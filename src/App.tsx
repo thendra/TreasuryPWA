@@ -82,31 +82,33 @@ const App = () => {
         <Routes>
           <Route path="/">
             <Box>
-              {isAuthenticated ? (
-                <Box>
-                  <div>
-                    <img src={user?.picture} alt={user?.name} />
-                  </div>
-                  <h2>{user?.name}</h2>
-                  <p>{user?.email}</p>
-                  <LogoutButton />
-                </Box>
-              ) : (
-                <Box>
-                  <Box
-                    maxWidth="800px"
-                    margin="auto"
-                    paddingTop="100px"
-                    paddingBottom="100px"
-                  >
-                    <Typography variant="h2">
-                      Welcome to Treasury, please authenticate yourself to view
-                      your collection
-                    </Typography>
+              <Box height="100vh">
+                {isAuthenticated ? (
+                  <Box>
+                    <div>
+                      <img src={user?.picture} alt={user?.name} />
+                    </div>
+                    <h2>{user?.name}</h2>
+                    <p>{user?.email}</p>
+                    <LogoutButton />
                   </Box>
-                  <LoginButton />
-                </Box>
-              )}
+                ) : (
+                  <Box>
+                    <Box
+                      maxWidth="800px"
+                      margin="auto"
+                      paddingTop="100px"
+                      paddingBottom="100px"
+                    >
+                      <Typography variant="h2">
+                        Welcome to Treasury, please authenticate yourself to
+                        view your collection
+                      </Typography>
+                    </Box>
+                    <LoginButton />
+                  </Box>
+                )}
+              </Box>
               <Box paddingTop={8}>
                 <Items />
               </Box>

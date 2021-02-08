@@ -2,11 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_ITEMS = gql`
   query GetItems {
-    userInfo @client {
-      user
-      isAuthenticated
-      userId
-    }
+    userId @client
     Items {
       id
       title
@@ -20,6 +16,7 @@ export const GET_ITEMS = gql`
 
 export const GET_ITEM_BY_ID = gql`
   query GetItemById($itemId: String!) {
+    userId @client
     Items_by_pk(id: $itemId) {
       description
       id
@@ -33,6 +30,8 @@ export const GET_ITEM_BY_ID = gql`
 
 export const GET_ITEM_LINKS = gql`
   query GetItemLinks {
+    userId @client
+
     Items {
       id
     }
