@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
-import { REMOVE_ITEM, GET_ITEMS } from "../../graphQL/queries";
+import { REMOVE_ITEM, GET_ITEMS } from "../../graphQl/queries";
 import {
   Items as IItems,
   GetItemsQuery,

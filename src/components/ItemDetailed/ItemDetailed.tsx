@@ -12,7 +12,7 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useParams } from "react-router-dom";
-import { GET_ITEM_BY_ID, UPDATE_ITEM_DESCRIPTION } from "../../graphQL/queries";
+import { GET_ITEM_BY_ID, UPDATE_ITEM_DESCRIPTION } from "../../graphQl/queries";
 import {
   GetItemByIdQuery,
   UpdateItemDescriptionMutation,

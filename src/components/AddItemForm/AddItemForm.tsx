@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useMutation } from "@apollo/client";
 import { userInfo } from "../../components/AppProvider";
 import ImageUpload from "../ImageUpload";
-import { ADD_ITEM, GET_ITEMS } from "../../graphQL/queries";
+import { ADD_ITEM, GET_ITEMS } from "../../graphQl/queries";
 import { AdditemMutation } from "../../output-types";
 
 interface IAddItemForm {
