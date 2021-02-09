@@ -23,9 +23,9 @@ import { useReactiveVar } from "@apollo/client";
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
-    minHeight: "100vh",
+    minHeight: "90vh",
     height: "100%",
-    backgroundColor: "#ccdad1",
+    backgroundColor: "#252528",
     width: "calc(100% - 40px)",
     padding: `${30}px ${20}px`,
     [theme.breakpoints.down("md")]: {
@@ -47,6 +47,12 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: "#fff",
     },
   },
+  landingImage: {
+    width: "50%",
+    height: "90vh",
+    backgroundImage: "url(camera.jpg)",
+    backgroundSize: "cover",
+  },
 }));
 
 const App = () => {
@@ -67,7 +73,7 @@ const App = () => {
   const classes = useStyles();
 
   return (
-    <Box>
+    <Box className={classes.app}>
       <Hidden xsDown>
         <nav>
           <Link to="/">
@@ -78,7 +84,7 @@ const App = () => {
           </Link>
         </nav>
       </Hidden>
-      <Box className={classes.app}>
+      <Box>
         <Routes>
           <Route path="/">
             <Box>
@@ -93,19 +99,32 @@ const App = () => {
                     <LogoutButton />
                   </Box>
                 ) : (
-                  <Box>
+                  <Box display="flex" flexWrap="wrap">
                     <Box
-                      maxWidth="800px"
-                      margin="auto"
-                      paddingTop="100px"
-                      paddingBottom="100px"
+                      boxSizing="border-box"
+                      minWidth="500px"
+                      width="50%"
+                      padding="100px"
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="center"
                     >
-                      <Typography variant="h2">
-                        Welcome to Treasury, please authenticate yourself to
-                        view your collection
-                      </Typography>
+                      <Box paddingBottom="50px">
+                        <Typography variant="h1">Treasury</Typography>
+                      </Box>
+                      <Box paddingBottom="50px">
+                        <Typography variant="h2" align="left">
+                          Keep track of your collections in one convenient
+                          place.
+                        </Typography>
+                      </Box>
+                      <Box width="250px" marginLeft="auto" marginRight="auto">
+                        <LoginButton />
+                      </Box>
                     </Box>
-                    <LoginButton />
+                    <Hidden mdDown>
+                      <Box className={classes.landingImage} />
+                    </Hidden>
                   </Box>
                 )}
               </Box>

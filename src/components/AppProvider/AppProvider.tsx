@@ -12,6 +12,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { makeVar } from "@apollo/client";
+import { ThemeProvider } from "@material-ui/core/styles";
+import theme from "./Theme";
 
 export const userInfo = makeVar<{
   user: any;
@@ -111,7 +113,11 @@ const AppProvider = ({ children }: IAppProvider) => {
     cache: new InMemoryCache({ typePolicies }),
   });
 
-  return <ApolloProvider client={client}>{children}</ApolloProvider>;
+  return (
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </ApolloProvider>
+  );
 };
 
 export default AppProvider;
