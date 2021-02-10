@@ -124,47 +124,59 @@ const ItemDetailed = () => {
             src={item?.image_url || ""}
             alt={item?.title as string}
           />
-          <Box paddingLeft={2} paddingRight={2}>
+          <Box
+            paddingLeft={2}
+            paddingRight={2}
+            width="50%"
+            display="flex"
+            flexDirection="column"
+          >
             <Hidden smDown>
               <Typography display="block" align="left" variant="h1">
                 {item?.title}
               </Typography>
-              <Checkbox
+              {/* <Checkbox
                 checked={item?.is_public || false}
                 onChange={handleIsPublicChange}
-              />
+              /> */}
             </Hidden>
-            {!editMode ? (
-              <Box display="flex">
-                <Box flex="1">
+            <Box
+              display="flex"
+              bgcolor="white"
+              flex="1"
+              padding={2}
+              borderRadius={8}
+            >
+              {!editMode ? (
+                <Box flex="1" display="flex" justifyContent="space-between">
                   <Typography align="left" variant="body1">
                     {updateDescValue.description ||
                       "Click on the edit button to add a description..."}
                   </Typography>
+                  {canEdit && <EditIcon onClick={() => setEditMode(true)} />}
                 </Box>
-                {canEdit && <EditIcon onClick={() => setEditMode(true)} />}
-              </Box>
-            ) : (
-              <ClickAwayListener onClickAway={handleDescChange}>
-                <TextField
-                  value={
-                    updateDescValue.description ||
-                    "Add a description of your item here..."
-                  }
-                  fullWidth
-                  id="outlined-multiline-static"
-                  label="Description"
-                  multiline
-                  onChange={(e) => {
-                    setDescValues({
-                      id,
-                      description: e.target.value,
-                    });
-                  }}
-                  variant="outlined"
-                />
-              </ClickAwayListener>
-            )}
+              ) : (
+                <ClickAwayListener onClickAway={handleDescChange}>
+                  <TextField
+                    value={
+                      updateDescValue.description ||
+                      "Add a description of your item here..."
+                    }
+                    fullWidth
+                    id="outlined-multiline-static"
+                    label="Description"
+                    multiline
+                    onChange={(e) => {
+                      setDescValues({
+                        id,
+                        description: e.target.value,
+                      });
+                    }}
+                    variant="outlined"
+                  />
+                </ClickAwayListener>
+              )}
+            </Box>
           </Box>
         </>
       )}

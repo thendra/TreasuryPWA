@@ -10,7 +10,9 @@ const LoginButton = () => {
       size="large"
       variant="contained"
       color="primary"
-      onClick={() => loginWithRedirect()}
+      onClick={() =>
+        loginWithRedirect({ redirectUri: "http://localhost:3000" })
+      }
     >
       Log In
     </Button>

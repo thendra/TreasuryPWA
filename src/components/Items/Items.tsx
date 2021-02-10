@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { REMOVE_ITEM, GET_ITEMS } from "../../graphQl/queries";
 import {
   Items as IItems,
@@ -11,7 +11,7 @@ import ItemSummary from "../ItemSummary";
 import { userInfo } from "../AppProvider";
 
 const Items = () => {
-  const { data, networkStatus, error } = useQuery<GetItemsQuery>(GET_ITEMS, {
+  const { data } = useQuery<GetItemsQuery>(GET_ITEMS, {
     notifyOnNetworkStatusChange: true,
   });
 
@@ -28,7 +28,7 @@ const Items = () => {
     <Box>
       {isAuthenticated && (
         <Box>
-          <Typography variant="h2">Your Items</Typography>
+          <Typography variant="h1">Your Items</Typography>
           <Box display="flex" flexWrap="wrap" justifyContent="center">
             {data?.Items.filter((item) => item.created_by === user?.sub).map(
               ({ id, title, image_url, created_by }: IItems) => (
@@ -44,7 +44,7 @@ const Items = () => {
           </Box>
         </Box>
       )}
-      <Box>
+      {/* <Box>
         <Typography variant="h2">Public Items</Typography>
         {networkStatus === NetworkStatus.refetch && "Refetching!"}
         {networkStatus === NetworkStatus.loading && "loading..."}
@@ -62,7 +62,7 @@ const Items = () => {
             )
           )}
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

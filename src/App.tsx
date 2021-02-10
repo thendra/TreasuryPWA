@@ -26,16 +26,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     minHeight: "100vh",
     height: "100%",
     backgroundColor: "#252528",
-    // width: "calc(100% - 40px)",
-    padding: `${30}px ${20}px`,
-    paddingTop: 0,
+    padding: `${0} ${20}px`,
     [theme.breakpoints.down("md")]: {
       width: "100%",
-      padding: `${30}px 0`,
-      paddingTop: 0,
+      padding: 0,
     },
     margin: "auto",
     textAlign: "center",
+  },
+  navBar: {
+    display: "flex",
+    color: "#fff",
   },
   media: {
     height: 200,
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const App = () => {
-  const { user, isAuthenticated } = useReactiveVar(userInfo);
+  const { isAuthenticated } = useReactiveVar(userInfo);
   const [addItemFormOpen, setAddItemFormOpen] = useState(false);
   const navigate = useNavigate();
   const bottomNavConfig = {
@@ -81,20 +82,27 @@ const App = () => {
   return (
     <Box className={classes.app}>
       <Hidden xsDown>
-        <nav>
+        <nav className={classes.navBar}>
           <Link to="/">
             <Box p={2} display="flex" height="10vh" alignItems="center">
               <Typography variant="h6">Treasury</Typography>
               <HomeIcon />
             </Box>
           </Link>
+          {isAuthenticated && (
+            <Link to="items">
+              <Box p={2} display="flex" height="10vh" alignItems="center">
+                <Typography variant="h6">Items</Typography>
+              </Box>
+            </Link>
+          )}
         </nav>
       </Hidden>
       <Routes>
         <Route path="/">
           <Box>
             <Box height="90vh">
-              {isAuthenticated ? (
+              {/* {isAuthenticated ? (
                 <Box>
                   <div>
                     <img src={user?.picture} alt={user?.name} />
@@ -103,7 +111,8 @@ const App = () => {
                   <p>{user?.email}</p>
                   <LogoutButton />
                 </Box>
-              ) : (
+              ) : ( */}
+              {!isAuthenticated ? (
                 <Box display="flex" flexWrap="wrap" height="100%">
                   <Box
                     width="50%"
@@ -134,12 +143,16 @@ const App = () => {
                     <Box className={classes.landingImage} />
                   </Hidden>
                 </Box>
+              ) : (
+                <Items />
               )}
+              {/* )} */}
             </Box>
-            <Box paddingTop={8}>
+            {/* <Box paddingTop={8}>
               <Items />
-            </Box>
+            </Box> */}
           </Box>
+          <Route path="items" element={<Items />}></Route>
           <Route path=":id" element={<ItemDetailed />} />
           <Route path="login" element={<LoginButton />} />
           <Route path="logout" element={<LogoutButton />} />
