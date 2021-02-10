@@ -3,7 +3,7 @@ export default {
     color: "#FFFFFF",
     fontFamily: "Montserrat",
     fontWeight: 700,
-    fontSize: "48px",
+    fontSize: "73px",
   },
   h2: {
     color: "#FFFFFF",
