@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: "-10vh",
     marginRight: "-20px",
     width: "calc(50% + 20px)",
+    [theme.breakpoints.down("md")]: {
+      width: "50%",
+      marginRight: 0,
+    },
     height: "100vh",
     right: 0,
     top: 0,
@@ -101,7 +105,7 @@ const App = () => {
       <Routes>
         <Route path="/">
           <Box>
-            <Box height="90vh">
+            <Box min-height="90vh">
               {/* {isAuthenticated ? (
                 <Box>
                   <div>
@@ -115,7 +119,7 @@ const App = () => {
               {!isAuthenticated ? (
                 <Box display="flex" flexWrap="wrap" height="100%">
                   <Box
-                    width="50%"
+                    flex="1"
                     padding={4}
                     display="flex"
                     flexDirection="column"

@@ -97,7 +97,7 @@ const ItemSummary = ({
     <Box className={classes.container}>
       <Box className={classes.card}>
         <Link to={`/${id}`}>
-          <img className="mainImage" src={image_url || ""} alt={title || ""} />
+          <img src={image_url || ""} alt={title || ""} />
         </Link>
         <Box className={classes.details}>
           <Typography variant="h5">{title}</Typography>

@@ -54,8 +54,8 @@ const AppProvider = ({ children }: IAppProvider) => {
   }, [user, isAuthenticated, userInfoVar.user]);
 
   const getAccess = useCallback(async () => {
-    const domain = "dev-mipf43mo.eu.auth0.com";
-
+    // const domain = "dev-mipf43mo.eu.auth0.com";
+    const domain = "dev-axkwk09j.eu.auth0.com";
     try {
       const tokenParam =
         localStorage.getItem("TOKEN") ||
@@ -68,6 +68,7 @@ const AppProvider = ({ children }: IAppProvider) => {
       console.log(e.message);
     }
   }, [getAccessTokenSilently]);
+
   getAccess();
 
   const httpLink = new HttpLink({
