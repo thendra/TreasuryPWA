@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const App = () => {
-  const { isAuthenticated } = useReactiveVar(userInfo);
+  const { isAuthenticated, user } = useReactiveVar(userInfo);
   const [addItemFormOpen, setAddItemFormOpen] = useState(false);
   const navigate = useNavigate();
   const bottomNavConfig = {
@@ -106,8 +106,15 @@ const App = () => {
         <Route path="/">
           <Box>
             <Box min-height="90vh">
-              {/* {isAuthenticated ? (
-                <Box>
+              {isAuthenticated ? (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  p={3}
+                  bgcolor="white"
+                  maxWidth="250px"
+                  margin="auto"
+                >
                   <div>
                     <img src={user?.picture} alt={user?.name} />
                   </div>
@@ -115,8 +122,7 @@ const App = () => {
                   <p>{user?.email}</p>
                   <LogoutButton />
                 </Box>
-              ) : ( */}
-              {!isAuthenticated ? (
+              ) : (
                 <Box display="flex" flexWrap="wrap" height="100%">
                   <Box
                     flex="1"
@@ -147,14 +153,8 @@ const App = () => {
                     <Box className={classes.landingImage} />
                   </Hidden>
                 </Box>
-              ) : (
-                <Items />
               )}
-              {/* )} */}
             </Box>
-            {/* <Box paddingTop={8}>
-              <Items />
-            </Box> */}
           </Box>
           <Route path="items" element={<Items />}></Route>
           <Route path=":id" element={<ItemDetailed />} />

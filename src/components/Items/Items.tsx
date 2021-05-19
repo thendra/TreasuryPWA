@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import { REMOVE_ITEM, GET_ITEMS } from "../../graphQl/queries";
 import {
   Items as IItems,
@@ -22,7 +22,7 @@ const Items = () => {
       refetchQueries: [{ query: GET_ITEMS }],
     });
   };
-  const { isAuthenticated, user } = userInfo();
+  const { isAuthenticated, user } = useReactiveVar(userInfo);
 
   return (
     <Box>
@@ -34,6 +34,7 @@ const Items = () => {
               ({ id, title, image_url, created_by }: IItems) => (
                 <ItemSummary
                   id={id}
+                  key={id}
                   title={title}
                   image_url={image_url}
                   created_by={created_by}
