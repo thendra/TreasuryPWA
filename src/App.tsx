@@ -7,6 +7,7 @@ import {
   BottomNavigationAction,
   Hidden,
   Fab,
+  Button,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
@@ -107,21 +108,30 @@ const App = () => {
           <Box>
             <Box min-height="90vh">
               {isAuthenticated ? (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  p={3}
-                  bgcolor="white"
-                  maxWidth="250px"
-                  margin="auto"
-                >
-                  <div>
-                    <img src={user?.picture} alt={user?.name} />
-                  </div>
-                  <h2>{user?.name}</h2>
-                  <p>{user?.email}</p>
-                  <LogoutButton />
-                </Box>
+                <>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    p={3}
+                    bgcolor="white"
+                    maxWidth="250px"
+                    margin="auto"
+                  >
+                    <div>
+                      <img src={user?.picture} alt={user?.name} />
+                    </div>
+                    <h2>{user?.name}</h2>
+                    <p>{user?.email}</p>
+                    <LogoutButton />
+                  </Box>
+                  <Box py={3}>
+                    <Link to="/items">
+                      <Button color="primary" variant="contained">
+                        View Your Items
+                      </Button>
+                    </Link>
+                  </Box>
+                </>
               ) : (
                 <Box display="flex" flexWrap="wrap" height="100%">
                   <Box
