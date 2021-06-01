@@ -11,7 +11,9 @@ const LoginButton = () => {
       variant="contained"
       color="primary"
       onClick={() =>
-        loginWithRedirect({ redirectUri: "http://localhost:3000" })
+        loginWithRedirect({
+          redirectUri: `${window.location.protocol}//${window.location.host}`,
+        })
       }
     >
       Log In

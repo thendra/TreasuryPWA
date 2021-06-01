@@ -13,7 +13,7 @@ ReactDOM.render(
       cacheLocation="localstorage"
       domain="dev-axkwk09j.eu.auth0.com"
       clientId="NyCE5YxmyPa2nuq5CSFkChbgZBUiZPTi"
-      redirectUri="http://localhost:3000/"
+      redirectUri={`${window.location.protocol}//${window.location.host}`}
       audience="https://dev-axkwk09j.eu.auth0.com/api/v2/"
       scope="read:current_user update:current_user_metadata"
     >
