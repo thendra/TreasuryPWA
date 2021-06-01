@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ApolloClient,
   InMemoryCache,
@@ -6,7 +6,6 @@ import {
   split,
   HttpLink,
   TypePolicies,
-  useReactiveVar,
 } from "@apollo/client";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getMainDefinition } from "@apollo/client/utilities";
@@ -41,7 +40,6 @@ interface IAppProvider {
 
 const AppProvider = ({ children }: IAppProvider) => {
   const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
-  const userInfoVar = useReactiveVar(userInfo);
   const [accessToken, setAccessToken] = useState("initialState");
 
   useEffect(() => {
@@ -52,20 +50,19 @@ const AppProvider = ({ children }: IAppProvider) => {
   }, [user, isAuthenticated]);
 
   useEffect(() => {
+    const getAccess = async () => {
+      const domain = "dev-axkwk09j.eu.auth0.com";
+      try {
+        const tokenParam = await getAccessTokenSilently({
+          audience: `https://${domain}/api/v2/`,
+          scope: "read:current_user",
+        });
+        setAccessToken(tokenParam);
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
     getAccess();
-  }, []);
-
-  const getAccess = useCallback(async () => {
-    const domain = "dev-axkwk09j.eu.auth0.com";
-    try {
-      const tokenParam = await getAccessTokenSilently({
-        audience: `https://${domain}/api/v2/`,
-        scope: "read:current_user",
-      });
-      setAccessToken(tokenParam);
-    } catch (e) {
-      console.log(e.message);
-    }
   }, [getAccessTokenSilently]);
 
   const httpLink = new HttpLink({
@@ -74,21 +71,21 @@ const AppProvider = ({ children }: IAppProvider) => {
       authorization: `Bearer ${accessToken}`,
       "x-hasura-admin-secret": "hendra",
       "x-hasura-role": "user",
-      "x-hasura-user-id": `${userInfoVar.user?.sub}`,
+      "x-hasura-user-id": `${userInfo().user?.sub}`,
     },
   });
 
   const wsLink = new WebSocketLink({
     uri: "wss://cheerful-possum-15.hasura.app/v1/graphql",
     options: {
-      // reconnect: true,
+      reconnect: true,
       lazy: true,
       connectionParams: {
         headers: {
           authorization: `Bearer ${accessToken}`,
           "x-hasura-admin-secret": "hendra",
           "x-hasura-role": "user",
-          "x-hasura-user-id": `${userInfoVar.user?.sub}`,
+          "x-hasura-user-id": `${userInfo().user?.sub}`,
         },
       },
     },

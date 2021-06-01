@@ -22,7 +22,7 @@ const Items = () => {
       refetchQueries: [{ query: GET_ITEMS }],
     });
   };
-  const { isAuthenticated, user } = useReactiveVar(userInfo);
+  const { isAuthenticated } = useReactiveVar(userInfo);
 
   return (
     <Box>
@@ -30,7 +30,7 @@ const Items = () => {
         <Box>
           <Typography variant="h1">Your Items</Typography>
           <Box display="flex" flexWrap="wrap" justifyContent="center">
-            {data?.Items.filter((item) => item.created_by === user?.sub).map(
+            {data?.Items.filter((item) => item.created_by === data.userId).map(
               ({ id, title, image_url, created_by }: IItems) => (
                 <ItemSummary
                   id={id}

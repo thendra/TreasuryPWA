@@ -5,7 +5,7 @@ import {
   Typography,
   Hidden,
   TextField,
-  Checkbox,
+  // Checkbox,
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { gql, useQuery, useMutation } from "@apollo/client";
@@ -85,9 +85,9 @@ const ItemDetailed = () => {
     updateItemMutation({ variables: { ...updateDescValue } });
   };
 
-  const handleIsPublicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    updateItemMutation({ variables: { is_public: event.target.checked } });
-  };
+  // const handleIsPublicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   updateItemMutation({ variables: { is_public: event.target.checked } });
+  // };
 
   const subscribeToDescriptionUpdates = () => {
     subscribeToMore({
@@ -158,11 +158,9 @@ const ItemDetailed = () => {
               ) : (
                 <ClickAwayListener onClickAway={handleDescChange}>
                   <TextField
-                    value={
-                      updateDescValue.description ||
-                      "Add a description of your item here..."
-                    }
+                    value={updateDescValue.description}
                     fullWidth
+                    defaultValue="Add a description of your item here..."
                     id="outlined-multiline-static"
                     label="Description"
                     multiline
