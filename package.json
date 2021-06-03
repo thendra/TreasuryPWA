@@ -25,7 +25,7 @@
     "react-dropzone": "^11.0.2",
     "react-router": "^6.0.0-beta.0",
     "react-router-dom": "^6.0.0-beta.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^4.0.3",
     "storybook": "^6.0.16",
     "subscriptions-transport-ws": "^0.9.18",
     "superagent": "^5.3.1",
