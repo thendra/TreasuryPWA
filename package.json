@@ -8,7 +8,6 @@
     "@auth0/auth0-spa-js": "^1.15.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@storybook/addon-knobs": "^6.0.16",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -25,15 +24,13 @@
     "react-dropzone": "^11.0.2",
     "react-router": "^6.0.0-beta.0",
     "react-router-dom": "^6.0.0-beta.0",
-    "react-scripts": "^4.0.3",
-    "storybook": "^6.0.16",
+    "react-scripts": "3.4.1",
     "subscriptions-transport-ws": "^0.9.18",
     "superagent": "^5.3.1",
     "typescript": "~3.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
-    "storybook": "start-storybook -p 9009 -s public",
     "create-component": "node scripts/create-component/index.ts",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -63,8 +60,6 @@
     "@graphql-codegen/typescript-document-nodes": "^1.17.8",
     "@graphql-codegen/typescript-operations": "^1.17.8",
     "@graphql-codegen/typescript-react-apollo": "^2.0.7",
-    "@storybook/preset-create-react-app": "^3.1.4",
-    "@storybook/react": "^6.0.16",
     "@types/uuid": "^8.3.0",
     "uuid": "^8.3.0"
   }
