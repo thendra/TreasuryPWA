@@ -51,6 +51,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: "#fff",
     },
   },
+  '@media only screen and (max-height: 500px)': {
+    bottomNav: {
+      display: 'none',
+    }
+  },
   landingImage: {
     marginTop: "-10vh",
     marginRight: "-20px",
@@ -186,6 +191,7 @@ const App = () => {
             </Box>
           </Hidden>
           <Hidden smUp>
+            <Box height='10vh' data-id='spacer'/>
             <BottomNavigation
               className={classes.bottomNav}
               onChange={handleBottomNav}
@@ -199,6 +205,7 @@ const App = () => {
               <BottomNavigationAction
                 value="allItems"
                 label="All Items"
+                href="/items"
                 icon={<AppsIcon />}
               />
             </BottomNavigation>
