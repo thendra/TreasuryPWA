@@ -6,7 +6,7 @@ import {
   Typography,
   Dialog,
   CircularProgress,
-  // Checkbox,
+  Checkbox,
 } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 import { useMutation, useReactiveVar } from "@apollo/client";
@@ -27,7 +27,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
-  // const [isPublic, setIsPublic] = useState(false);
+  const [isPublic, setIsPublic] = useState(false);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -38,9 +38,9 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
     event.preventDefault();
     setDescription(event.target.value);
   };
-  // const handleIsPublicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setIsPublic(event.target.checked);
-  // };
+  const handleIsPublicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsPublic(event.target.checked);
+  };
 
   const handleAddItem = (event: React.FormEvent) => {
     event.preventDefault();
@@ -51,7 +51,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
         description: description,
         image_url: imageUrl,
         user_id: user.sub,
-        // is_public: isPublic,
+        is_public: isPublic,
       },
       refetchQueries: [{ query: GET_ITEMS }],
     });
@@ -105,7 +105,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
               onUpload={setImageUrl}
             />
           </Box>
-          {/* <Box
+          <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -117,7 +117,7 @@ const AddItemForm = ({ open, onClose }: IAddItemForm) => {
               inputProps={{ "aria-label": "primary checkbox" }}
             />
             <Typography variant="caption">Make Public</Typography>
-          </Box> */}
+          </Box>
           <Box display="flex" justifyContent="center" pb={2}>
             <Button
               variant="contained"

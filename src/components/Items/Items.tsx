@@ -28,10 +28,12 @@ const Items = () => {
     <Box>
       {isAuthenticated && (
         <Box>
-          <Typography variant="h1">Your Items</Typography>
-          <Box display="flex" flexWrap="wrap" justifyContent="center">
-            {data?.Items.filter((item) => item.created_by === data.userId).map(
-              ({ id, title, image_url, created_by }: IItems) => (
+          <Box py={3}>
+            <Typography variant="h1">Your Items</Typography>
+            <Box display="flex" flexWrap="wrap" justifyContent="center">
+              {data?.Items.filter(
+                (item) => item.created_by === data.userId
+              ).map(({ id, title, image_url, created_by }: IItems) => (
                 <ItemSummary
                   id={id}
                   key={id}
@@ -40,30 +42,28 @@ const Items = () => {
                   created_by={created_by}
                   onRemove={handleRemoveItem}
                 />
-              )
-            )}
+              ))}
+            </Box>
+          </Box>
+          <Box py={3}>
+            <Typography variant="h2">Public Items</Typography>
+            <Box display="flex" flexWrap="wrap" justifyContent="center">
+              {data?.Items.map(
+                ({ id, title, image_url, created_by }: IItems) => (
+                  <ItemSummary
+                    id={id}
+                    key={id}
+                    title={title}
+                    image_url={image_url}
+                    created_by={created_by}
+                    onRemove={handleRemoveItem}
+                  />
+                )
+              )}
+            </Box>
           </Box>
         </Box>
       )}
-      {/* <Box>
-        <Typography variant="h2">Public Items</Typography>
-        {networkStatus === NetworkStatus.refetch && "Refetching!"}
-        {networkStatus === NetworkStatus.loading && "loading..."}
-        {error && `Error! ${error.message}`}
-        <Box display="flex" flexWrap="wrap" justifyContent="center">
-          {data?.Items.filter((item) => !!item.is_public).map(
-            ({ id, title, image_url, created_by }: IItems) => (
-              <ItemSummary
-                id={id}
-                title={title}
-                image_url={image_url}
-                created_by={created_by}
-                onRemove={handleRemoveItem}
-              />
-            )
-          )}
-        </Box>
-      </Box> */}
     </Box>
   );
 };
