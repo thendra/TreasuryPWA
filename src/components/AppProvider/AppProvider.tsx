@@ -59,7 +59,7 @@ const AppProvider = ({ children }: IAppProvider) => {
         });
         setAccessToken(tokenParam);
       } catch (e) {
-        console.log(e.message);
+        console.log(e);
       }
     };
     getAccess();

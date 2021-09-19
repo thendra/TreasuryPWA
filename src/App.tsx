@@ -109,7 +109,7 @@ const App = () => {
         </nav>
       </Hidden>
       <Routes>
-        <Route path="/">
+        <Route path="/" element={(
           <Box>
             <Box min-height="90vh">
               {isAuthenticated ? (
@@ -170,12 +170,11 @@ const App = () => {
                 </Box>
               )}
             </Box>
-          </Box>
+          </Box> )} />
           <Route path="items" element={<Items />}></Route>
           <Route path=":id" element={<ItemDetailed />} />
           <Route path="login" element={<LoginButton />} />
           <Route path="logout" element={<LogoutButton />} />
-        </Route>
       </Routes>
       {isAuthenticated && (
         <>

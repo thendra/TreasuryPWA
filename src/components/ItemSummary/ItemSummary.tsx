@@ -4,7 +4,6 @@ import { Box, Fab, Typography, Theme } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { Items } from "../../output-types";
-import { userInfo } from "../AppProvider";
 
 const useStyles = makeStyles<Theme, Pick<IItemSummary, "image_url">>(
   (theme: Theme) => ({
@@ -78,8 +77,9 @@ const useStyles = makeStyles<Theme, Pick<IItemSummary, "image_url">>(
   })
 );
 
-interface IItemSummary extends Items {
-  onRemove: (id: string) => void;
+export interface IItemSummary extends Items {
+  onRemove?: (id: string) => void;
+  canDelete?: boolean;
 }
 
 const ItemSummary = ({
@@ -87,11 +87,9 @@ const ItemSummary = ({
   title,
   image_url,
   onRemove,
-  created_by,
+  canDelete,
 }: IItemSummary) => {
-  const { user } = userInfo();
   const classes = useStyles({ image_url });
-  const canDelete = created_by === user?.sub;
 
   return (
     <Box className={classes.container}>
@@ -101,7 +99,7 @@ const ItemSummary = ({
         </Link>
         <Box className={classes.details}>
           <Typography variant="h5">{title}</Typography>
-          {canDelete && (
+          {(canDelete && !!onRemove) && (
             <Fab
               onClick={() => onRemove(id)}
               color="primary"

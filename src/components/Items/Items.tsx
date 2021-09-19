@@ -14,7 +14,7 @@ const Items = () => {
   const { data } = useQuery<GetItemsQuery>(GET_ITEMS, {
     notifyOnNetworkStatusChange: true,
   });
-
+  const { user } = userInfo();
   const [removeItem] = useMutation<RemoveItemMutation>(REMOVE_ITEM);
   const handleRemoveItem = (id: String) => {
     removeItem({
@@ -39,7 +39,7 @@ const Items = () => {
                   key={id}
                   title={title}
                   image_url={image_url}
-                  created_by={created_by}
+                  canDelete={created_by === user?.sub}
                   onRemove={handleRemoveItem}
                 />
               ))}
@@ -55,7 +55,7 @@ const Items = () => {
                     key={id}
                     title={title}
                     image_url={image_url}
-                    created_by={created_by}
+                    canDelete={created_by === user?.sub}
                     onRemove={handleRemoveItem}
                   />
                 )
@@ -63,7 +63,7 @@ const Items = () => {
             </Box>
           </Box>
         </Box>
-      )}
+        )}
     </Box>
   );
 };
